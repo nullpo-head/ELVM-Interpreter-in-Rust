@@ -21,7 +21,7 @@ enum Operand {
 #[derive(Debug)]
 enum Statement {
   Label(String),
-  Instruction(String, Vec<Operand>),
+  Instruction(Opcode, Vec<Operand>),
 }
 
 #[derive(Debug)]
@@ -143,7 +143,7 @@ fn opcode<I>(input: I) -> ParseResult<Opcode, I>
 }
 
 fn parse(src: &str) -> Vec<Statement> {
-  let instruction = optional(spaces()).with(symbol()).skip(inline_spaces()).and(parser(operands)).map(|(opcode, operands)| Statement::Instruction(opcode, operands));
+  let instruction = optional(spaces()).with(parser(opcode)).skip(inline_spaces()).and(parser(operands)).map(|(opcode, operands)| Statement::Instruction(opcode, operands));
   let label = optional(spaces()).with(symbol()).and(token(':')).map(|(id, _)| Statement::Label(id));
   let statement = try(label).or(instruction).skip(inline_spaces()).skip(newline()).skip(spaces());
   let mut program = many::<Vec<_>, _>(statement).skip(eof());
@@ -169,15 +169,16 @@ fn collect_text_labels(statements: &Vec<Statement>, labels: &mut HashMap<String,
         labels.insert((*symbol).clone(), pc);
       },
       Statement::Instruction(ref opcode, _) => {
-        match (*opcode).chars().next() {
-          Some('j') => {
-            // This is a branch instruction. The basic block ends.
+        use Opcode::*;
+        match *opcode {
+          Jeq | Jne | Jlt | Jgt | Jle | Jge | Jmp => {
+            // End of the basic block
             pc += 1;
             basic_block_size = 0;
           }, 
           _ => basic_block_size += 1,
         }
-      }
+      },
     }
   }
 }
@@ -185,19 +186,17 @@ fn collect_text_labels(statements: &Vec<Statement>, labels: &mut HashMap<String,
 fn collect_data_labels(statements: &Vec<Statement>, labels: &mut HashMap<String, usize>) {
   let mut size: usize = 0;
   for statement in statements {
-    match *statement {
-      Statement::Label(ref symbol) => {
-        labels.insert((*symbol).clone(), size);
-      },
-      Statement::Instruction(ref opcode, ref operands) => {
-        size += match (*opcode).as_str() {
-          ".long" => 3,
-          ".string" => match (*operands)[0] {
-            Operand::ImmS(ref str_lit) => (*str_lit).as_bytes().len(),
-            _ => 0, // Actually, this is invalid but ignore now
-          },
-          _ => 0,
-        }
+    if let Statement::Label(ref symbol) = *statement {
+      labels.insert((*symbol).clone(), size);
+    }
+    if let Statement::Instruction(Opcode::PseudoOp(ref opcode), ref operands) = *statement {
+      size += match (*opcode).as_str() {
+        ".long" => 3,
+        ".string" => match (*operands)[0] {
+          Operand::ImmS(ref str_lit) => (*str_lit).as_bytes().len(),
+          _ => 0, // Actually, this is invalid but ignore now
+        },
+        _ => 0,
       }
     }
   }
@@ -208,7 +207,7 @@ fn separate_segments(statements: Vec<Statement>) -> (Vec<Statement>, Vec<Stateme
   let mut data = vec![];
   let mut seg = Segment::Text;
   for statement in statements {
-    if let Statement::Instruction(ref opcode, _) = statement {
+    if let Statement::Instruction(Opcode::PseudoOp(ref opcode), _) = statement {
       match (*opcode).as_str() {
         ".text" => {
           seg = Segment::Text;
