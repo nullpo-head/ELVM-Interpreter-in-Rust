@@ -1,0 +1,7 @@
+[package]
+name = "elvmp"
+version = "0.1.0"
+authors = ["nullpo-head <abc.tkys+pub@gmail.com>"]
+
+[dependencies]
+combine = "2.3.1"
