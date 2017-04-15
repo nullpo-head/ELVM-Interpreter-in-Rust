@@ -5,8 +5,11 @@ use combine::{parser, between, any, one_of, many, many1, token, try, sep_by, opt
 use combine::primitives::Consumed;
 use std::collections::HashMap;
 use std::ops::{Index, IndexMut};
+use std::io;
+use std::io::prelude::*;
 
 const WORD_SIZE : usize = 3;
+const WORD_MASK : u32 = 0xffffff;
 const CHAR_BITS: u32 = 8;
 
 #[derive(Debug, Clone, Copy)]
@@ -254,22 +257,6 @@ fn separate_segments(statements: Vec<Statement>) -> (Vec<Statement>, Vec<Stateme
   (text, data)
 }
 
-fn load_data(data: &Vec<u8>, addr: u32) -> u32 {
-  let addr = (addr & 0x00ffffff) as usize;
-  let mut result = 0;
-  for i in 0..WORD_SIZE {
-    result |= (data[addr + i] as u32) << (CHAR_BITS * i as u32);
-  }
-  result
-}
-
-fn store_data(data: &mut Vec<u8>, addr: u32, value: u32) {
-  let addr = (addr & 0x00ffffff) as usize;
-  for i in 0..WORD_SIZE {
-    data[addr + i] = (value >> (i as u32)) as u8;
-  }
-}
-
 #[derive(Default, Debug)]
 struct RegisterEnv {
   a: u32,
@@ -307,17 +294,41 @@ impl IndexMut<Register> for RegisterEnv {
     }
   }
 }
+
+fn load_data(data: &Vec<u8>, addr: u32) -> u32 {
+  let addr = (addr & WORD_MASK) as usize;
+  let mut result = 0;
+  for i in 0..WORD_SIZE {
+    result |= (data[addr + i] as u32) << (CHAR_BITS * i as u32);
+  }
+  result
+}
+
+fn store_data(data: &mut Vec<u8>, addr: u32, value: u32) {
+  let addr = (addr & WORD_MASK) as usize;
+  for i in 0..WORD_SIZE {
+    data[addr + i] = (value >> (i as u32)) as u8;
+  }
+}
+
 fn eval(mut pc: usize, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: HashMap<String, usize>) {
   println!("Eval text! {:?}", text);
   let mut registers = RegisterEnv {..Default::default()};
-  while pc < text.len() {
+  'block: while pc < text.len() {
     let block = &text[pc];
-    println!("Eval block! {:?}", block);
-    for statement in block {
+    //println!("Eval block! {:?}", block);
+    'op: for statement in block {
       println!("Eval statement! {:?}", statement);
+      /*let srcval = |opname, src| match src {
+        &Operand::Reg(ref name) => registers[*name],
+        &Operand::ImmI(ref val) => *val as u32,
+        &Operand::Label(ref name) => label_map[name] as u32,
+        _ => {panic!("Illegal {} operands", opname)}
+      };*/
       if let Statement::Instruction(ref opcode, ref operands)  = *statement {
         use Opcode::*;
         use Operand::*;
+
         match *opcode {
           Mov => {
             match (&operands[0], &operands[1]) {
@@ -336,13 +347,13 @@ fn eval(mut pc: usize, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: 
           Add => {
             match (&operands[0], &operands[1]) {
               (&Reg(ref dst), &Reg(ref src)) => {
-                registers[*dst] += registers[*src];
+                registers[*dst] = registers[*dst].wrapping_add(registers[*src]);
               },
               (&Reg(ref dst), &ImmI(ref src)) => {
-                registers[*dst] += *src as u32;
+                registers[*dst] = registers[*dst].wrapping_add(*src as u32);
               },
               (&Reg(ref dst), &Label(ref src)) => {
-                registers[*dst] += label_map[src] as u32;
+                registers[*dst] = registers[*dst].wrapping_add(label_map[src] as u32);
               },
               _ => {panic!("Illegal Add operands")},
             }
@@ -350,18 +361,21 @@ fn eval(mut pc: usize, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: 
           Sub => {
             match (&operands[0], &operands[1]) {
               (&Reg(ref dst), &Reg(ref src)) => {
-                registers[*dst] -= registers[*src];
+                registers[*dst] = registers[*dst].wrapping_sub(registers[*src]);
               },
               (&Reg(ref dst), &ImmI(ref src)) => {
-                registers[*dst] -= *src as u32;
+                registers[*dst] = registers[*dst].wrapping_sub(*src as u32);
               },
               (&Reg(ref dst), &Label(ref src)) => {
-                registers[*dst] -= label_map[src] as u32;
+                registers[*dst] = registers[*dst].wrapping_sub(label_map[src] as u32);
               },
               _ => {panic!("Illegal Sub operands")},
             }
           },
           Load => {
+            println!("regb: {:?}", registers[Register::B]);
+            println!("regb as usize: {:?}", registers[Register::B] as usize);
+            println!("regb as usize: {:?}", registers[Register::B] as usize);
             match (&operands[0], &operands[1]) {
               (&Reg(ref dst), &Reg(ref src)) => {
                 registers[*dst] = load_data(&data, registers[*src]);
@@ -386,14 +400,73 @@ fn eval(mut pc: usize, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: 
               (&Reg(ref dst), &Label(ref src)) => {
                  store_data(&mut data, registers[*dst], label_map[src] as u32);
               },
-              _ => {panic!("Illegal Load operands")},
+              _ => {panic!("Illegal Store operands")},
             }
           },
-          _ => {}
+          Putc => {
+            match &operands[0] {
+              &Reg(ref src) => {
+                io::stdout().write(&[registers[*src] as u8]).unwrap();
+              },
+              &ImmI(ref src) => {
+                io::stdout().write(&[*src as u8]).unwrap();
+              },
+              &Label(ref src) => {
+                io::stdout().write(&[label_map[src] as u8]).unwrap();
+              },
+              _ => {panic!("Illegal Putc operands")},
+            }
+          },
+          Jeq | Jne | Jlt | Jgt | Jle | Jge => {
+            let jmp = match &operands[0] {
+                &Reg(ref jmp) => registers[*jmp] as usize,
+                &ImmI(ref jmp) => *jmp as usize,
+                &Label(ref jmp) => label_map[jmp],
+                _ => panic!("Illegal Jeq operands"),
+            };
+            let dst = match &operands[1] {
+              &Reg(ref dst) => registers[*dst],
+              _ => panic!("Illegal Jeq operands"),
+            };
+            let src = match &operands[2] {
+                &Reg(ref src) => registers[*src],
+                &ImmI(ref src) => *src as u32,
+                &Label(ref src) => label_map[src] as u32,
+                _ => panic!("Illegal Jeq operands"),
+            };
+            let condition = match *opcode {
+              Jeq => dst == src,
+              Jne => dst != src,
+              Jlt => dst < src,
+              Jgt => dst > src,
+              Jle => dst <= src,
+              Jge => dst >= src,
+              _ => panic!("unreachable"),
+            };
+            if condition {
+              pc = jmp;
+              continue 'block;
+            }
+          },
+          Jmp => {
+            let jmp = match &operands[0] {
+                &Reg(ref jmp) => registers[*jmp] as usize,
+                &ImmI(ref jmp) => *jmp as usize,
+                &Label(ref jmp) => label_map[jmp],
+                _ => panic!("Illegal Jmp operands"),
+            };
+            pc = jmp;
+            continue 'block;
+          },
+          Exit => {
+            break 'block;
+          }
+          _ => {},
         }
       } else {
         panic!("Illegal statement in text. Bug of encode_to_text_mem.");
       }
+      println!("regs: {:?}", registers);
     }
     pc += 1;
   }
@@ -401,7 +474,7 @@ fn eval(mut pc: usize, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: 
 }
 
 fn main() {
-  let statements = parse(TEST);
+  let statements = parse(SAMPLE_PROGRAM);
   println!("{:?}", statements);
   let (text, data) = separate_segments(statements);
   println!("separated text: {:?}", text);
@@ -422,12 +495,15 @@ main:
   .long 4242
   .L1:
   .long 5656
+  .L3:
+  .string "H"
 .text
   mov B, A
   mov C, .L0
   load D, C
   add C, 3
-  load BP, C
+  load BP, .L3
+  putc BP
  
 "#;
 
