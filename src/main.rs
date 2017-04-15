@@ -156,50 +156,62 @@ enum Segment {
   Data,
 }
 
-fn collect_text_labels(statements: &Vec<Statement>, labels: &mut HashMap<String, usize>) {
-  let mut pc: usize = 0;
-  let mut basic_block_size: u32 = 0;
+fn encode_to_text_mem(statements: Vec<Statement>, labels: &mut HashMap<String, usize>) -> Vec<Vec<Statement>> {
+  let mut result = vec![];
+  let mut basic_block = vec![];
   for statement in statements {
-    match *statement {
-      Statement::Label(ref symbol) => {
-        if basic_block_size > 0 {
-          pc += 1;
-          basic_block_size = 0;
+    match statement {
+      Statement::Label(symbol) => {
+        if basic_block.len() > 0 {
+          result.push(basic_block);
+          basic_block = vec![];
         }
-        labels.insert((*symbol).clone(), pc);
+        labels.insert(symbol, result.len());
       },
       Statement::Instruction(ref opcode, _) => {
         use Opcode::*;
         match *opcode {
           Jeq | Jne | Jlt | Jgt | Jle | Jge | Jmp => {
-            // End of the basic block
-            pc += 1;
-            basic_block_size = 0;
+            result.push(basic_block);
+            basic_block = vec![];
           }, 
-          _ => basic_block_size += 1,
+          _ => {},
         }
       },
     }
   }
+  result
 }
 
-fn collect_data_labels(statements: &Vec<Statement>, labels: &mut HashMap<String, usize>) {
-  let mut size: usize = 0;
+fn encode_to_data_mem(statements: Vec<Statement>, label_map: &mut HashMap<String, usize>) -> Vec<u8> {
+  let mut result = vec![];
   for statement in statements {
-    if let Statement::Label(ref symbol) = *statement {
-      labels.insert((*symbol).clone(), size);
+    if let Statement::Label(symbol) = statement {
+      label_map.insert(symbol, result.len());
+      continue;
     }
-    if let Statement::Instruction(Opcode::PseudoOp(ref opcode), ref operands) = *statement {
-      size += match (*opcode).as_str() {
-        ".long" => 3,
-        ".string" => match (*operands)[0] {
-          Operand::ImmS(ref str_lit) => (*str_lit).as_bytes().len(),
-          _ => 0, // Actually, this is invalid but ignore now
+    if let Statement::Instruction(Opcode::PseudoOp(opcode), operands) = statement {
+      match opcode.as_str() {
+        ".long" => {
+          if let Operand::ImmI(operand) = operands[0] {
+            let raw_bytes: [u8; 4] = unsafe {std::mem::transmute(operand)};
+            result.extend_from_slice(&raw_bytes[0..4]);
+          } else {
+            panic!("Invalid operand for .long");
+          }
         },
-        _ => 0,
-      }
+        ".string" => {
+          if let Operand::ImmS(ref operand) = operands[0] {
+            result.append(&mut operand.clone().into_bytes());
+          } else {
+            panic!("Invalid operand for .string");
+          }
+        },
+        opstr => {panic!("Invalid opcode in .data segment: {}", opstr)},
+      };
     }
   }
+  result
 }
 
 fn separate_segments(statements: Vec<Statement>) -> (Vec<Statement>, Vec<Statement>) {
@@ -229,26 +241,7 @@ fn separate_segments(statements: Vec<Statement>) -> (Vec<Statement>, Vec<Stateme
   (text, data)
 }
 
-fn ecndoe_to_operations(statements: Vec<Statement>) -> Vec<Vec<Opcode>> {
-  /*
-  let mut operations = vec![];
-  let mut basic_block = vec![];
-  for statement in statements {
-    if let Statement::Instruction(opstring, operands) = statement {
-      match opstring.as_str() {
-        "mov" => {
-          basic_block.push(Operation::Mov(operands[0], operands[1]));
-        },
-        "jeq" => {
-          basic_block.push(Operation::Jeq(operands[0], operands[1], operands[2]));
-          operations.push(basic_block);
-          basic_block = vec![];
-        },
-        _ => {},
-      }
-    }
-  }
-  */
+fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u8>, label_map: HashMap<String, usize>) {
   
   unimplemented!()
 }
@@ -257,10 +250,12 @@ fn main() {
   let statements = parse(SAMPLE_PROGRAM);
   println!("{:?}", statements);
   let (text, data) = separate_segments(statements);
-  let mut labels = HashMap::new();
-  collect_text_labels(&text, &mut labels);
-  collect_data_labels(&data, &mut labels);
-  println!("{:?}", labels);
+  let mut label_map = HashMap::new();
+  let text_mem = encode_to_text_mem(text, &mut label_map);
+  let data_mem = encode_to_data_mem(data, &mut label_map);
+  println!("{:?}", label_map);
+  println!("{:?}", data_mem);
+  //eval(0, text_mem, data_mem, label_map);
 }
 
 static SAMPLE_PROGRAM: &'static str = r#"
@@ -280,7 +275,7 @@ main:
     .L0:
     .string "Hello, world!\n"
     .Hoge:
-    long 32
+    .long 32
 .text
     mov A, .L0
     mov B, BP
