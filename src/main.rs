@@ -4,13 +4,14 @@ use combine::char::{spaces, digit, letter, alpha_num, newline};
 use combine::{parser, between, any, one_of, many, many1, token, try, sep_by, optional, eof, satisfy, Parser, State, Stream, ParseResult};
 use combine::primitives::Consumed;
 use std::collections::HashMap;
+use std::ops::{Index, IndexMut};
 
 const WORD_SIZE : usize = 3;
 const CHAR_BITS: u32 = 8;
 
 #[derive(Debug, Clone, Copy)]
 enum Register {
-  A, B, C, D, BP, SP, PC
+  A, B, C, D, BP, SP,
 }
 
 #[derive(Debug)]
@@ -253,17 +254,6 @@ fn separate_segments(statements: Vec<Statement>) -> (Vec<Statement>, Vec<Stateme
   (text, data)
 }
 
-#[derive(Default)]
-struct RegisterEnv {
-  a: u32,
-  b: u32,
-  c: u32,
-  d: u32,
-  bp: usize,
-  sp: usize,
-  pc: usize,
-}
-
 fn load_data(data: &Vec<u8>, addr: u32) -> u32 {
   let addr = (addr & 0x00ffffff) as usize;
   let mut result = 0;
@@ -280,11 +270,48 @@ fn store_data(data: &mut Vec<u8>, addr: u32, value: u32) {
   }
 }
 
-fn eval(pc: u32, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: HashMap<String, usize>) {
+#[derive(Default, Debug)]
+struct RegisterEnv {
+  a: u32,
+  b: u32,
+  c: u32,
+  d: u32,
+  bp: u32,
+  sp: u32,
+}
+
+impl Index<Register> for RegisterEnv {
+  type Output = u32;
+
+  fn index(&self, register: Register) -> &u32 {
+    match register {
+      Register::A => &self.a,
+      Register::B => &self.b,
+      Register::C => &self.c,
+      Register::D => &self.d,
+      Register::BP => &self.bp,
+      Register::SP => &self.sp,
+    }
+  }
+}
+
+impl IndexMut<Register> for RegisterEnv {
+  fn index_mut<'a>(&'a mut self, register: Register) -> &'a mut u32 {
+    match register {
+      Register::A => &mut self.a,
+      Register::B => &mut self.b,
+      Register::C => &mut self.c,
+      Register::D => &mut self.d,
+      Register::BP => &mut self.bp,
+      Register::SP => &mut self.sp,
+    }
+  }
+}
+fn eval(mut pc: usize, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: HashMap<String, usize>) {
   println!("Eval text! {:?}", text);
-  let mut registers = vec![0u32, 0, 0, 0, 0, 0, pc];
-  while (registers[Register::PC as usize] as usize) < text.len() {
-    let block = &text[registers[Register::PC as usize] as usize];
+  let mut registers = RegisterEnv {..Default::default()};
+  while pc < text.len() {
+    let block = &text[pc];
     println!("Eval block! {:?}", block);
     for statement in block {
       println!("Eval statement! {:?}", statement);
@@ -295,13 +322,13 @@ fn eval(pc: u32, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: HashMa
           Mov => {
             match (&operands[0], &operands[1]) {
               (&Reg(ref dst), &Reg(ref src)) => {
-                registers[*dst as usize] = registers[*src as usize];
+                registers[*dst] = registers[*src];
               },
               (&Reg(ref dst), &ImmI(ref src)) => {
-                registers[*dst as usize] = *src as u32;
+                registers[*dst] = *src as u32;
               },
               (&Reg(ref dst), &Label(ref src)) => {
-                registers[*dst as usize] = label_map[src] as u32;
+                registers[*dst] = label_map[src] as u32;
               },
               _ => {panic!("Illegal Mov operands")},
             }
@@ -309,13 +336,13 @@ fn eval(pc: u32, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: HashMa
           Add => {
             match (&operands[0], &operands[1]) {
               (&Reg(ref dst), &Reg(ref src)) => {
-                registers[*dst as usize] += registers[*src as usize];
+                registers[*dst] += registers[*src];
               },
               (&Reg(ref dst), &ImmI(ref src)) => {
-                registers[*dst as usize] += *src as u32;
+                registers[*dst] += *src as u32;
               },
               (&Reg(ref dst), &Label(ref src)) => {
-                registers[*dst as usize] += label_map[src] as u32;
+                registers[*dst] += label_map[src] as u32;
               },
               _ => {panic!("Illegal Add operands")},
             }
@@ -323,13 +350,13 @@ fn eval(pc: u32, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: HashMa
           Sub => {
             match (&operands[0], &operands[1]) {
               (&Reg(ref dst), &Reg(ref src)) => {
-                registers[*dst as usize] -= registers[*src as usize];
+                registers[*dst] -= registers[*src];
               },
               (&Reg(ref dst), &ImmI(ref src)) => {
-                registers[*dst as usize] -= *src as u32;
+                registers[*dst] -= *src as u32;
               },
               (&Reg(ref dst), &Label(ref src)) => {
-                registers[*dst as usize] -= label_map[src] as u32;
+                registers[*dst] -= label_map[src] as u32;
               },
               _ => {panic!("Illegal Sub operands")},
             }
@@ -337,13 +364,13 @@ fn eval(pc: u32, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: HashMa
           Load => {
             match (&operands[0], &operands[1]) {
               (&Reg(ref dst), &Reg(ref src)) => {
-                registers[*dst as usize] = load_data(&data, registers[*src as usize]);
+                registers[*dst] = load_data(&data, registers[*src]);
               },
               (&Reg(ref dst), &ImmI(ref src)) => {
-                registers[*dst as usize] = load_data(&data, *src as u32);
+                registers[*dst] = load_data(&data, *src as u32);
               },
               (&Reg(ref dst), &Label(ref src)) => {
-                registers[*dst as usize] = load_data(&data, label_map[src] as u32);
+                registers[*dst] = load_data(&data, label_map[src] as u32);
               },
               _ => {panic!("Illegal Load operands")},
             }
@@ -351,13 +378,13 @@ fn eval(pc: u32, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: HashMa
           Store => {
             match (&operands[0], &operands[1]) {
               (&Reg(ref dst), &Reg(ref src)) => {
-                 store_data(&mut data, registers[*dst as usize], registers[*src as usize]);
+                 store_data(&mut data, registers[*dst], registers[*src]);
               },
               (&Reg(ref dst), &ImmI(ref src)) => {
-                 store_data(&mut data, registers[*dst as usize], *src as u32);
+                 store_data(&mut data, registers[*dst], *src as u32);
               },
               (&Reg(ref dst), &Label(ref src)) => {
-                 store_data(&mut data, registers[*dst as usize], label_map[src] as u32);
+                 store_data(&mut data, registers[*dst], label_map[src] as u32);
               },
               _ => {panic!("Illegal Load operands")},
             }
@@ -368,7 +395,7 @@ fn eval(pc: u32, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: HashMa
         panic!("Illegal statement in text. Bug of encode_to_text_mem.");
       }
     }
-    registers[Register::PC as usize] += 1;
+    pc += 1;
   }
   println!("regs: {:?}", registers);
 }
