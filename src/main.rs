@@ -5,9 +5,12 @@ use combine::{parser, between, any, one_of, many, many1, token, try, sep_by, opt
 use combine::primitives::Consumed;
 use std::collections::HashMap;
 
-#[derive(Debug)]
+const WORD_SIZE : usize = 3;
+const CHAR_BITS: u32 = 8;
+
+#[derive(Debug, Clone, Copy)]
 enum Register {
-  A, B, C, D, BP, SP,
+  A, B, C, D, BP, SP, PC
 }
 
 #[derive(Debug)]
@@ -24,7 +27,7 @@ enum Statement {
   Instruction(Opcode, Vec<Operand>),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Opcode {
   Mov,
   Add,
@@ -157,21 +160,25 @@ enum Segment {
 }
 
 fn encode_to_text_mem(statements: Vec<Statement>, labels: &mut HashMap<String, usize>) -> Vec<Vec<Statement>> {
+  println!("encode_to_text_mem: encoding {:?}", statements);
   let mut result = vec![];
   let mut basic_block = vec![];
   for statement in statements {
     match statement {
       Statement::Label(symbol) => {
         if basic_block.len() > 0 {
+          println!("encode_to_text_mem: pushing basic_block {:?}", basic_block);
           result.push(basic_block);
           basic_block = vec![];
         }
         labels.insert(symbol, result.len());
       },
-      Statement::Instruction(ref opcode, _) => {
+      Statement::Instruction(opcode, operands) => {
+        basic_block.push(Statement::Instruction(opcode.clone(), operands));
         use Opcode::*;
-        match *opcode {
+        match opcode {
           Jeq | Jne | Jlt | Jgt | Jle | Jge | Jmp => {
+            println!("encode_to_text_mem: pushing basic_block {:?}", basic_block);
             result.push(basic_block);
             basic_block = vec![];
           }, 
@@ -179,6 +186,10 @@ fn encode_to_text_mem(statements: Vec<Statement>, labels: &mut HashMap<String, u
         }
       },
     }
+  }
+  if basic_block.len() > 0 {
+    println!("encode_to_text_mem: pushing basic_block {:?}", basic_block);
+    result.push(basic_block);
   }
   result
 }
@@ -195,7 +206,7 @@ fn encode_to_data_mem(statements: Vec<Statement>, label_map: &mut HashMap<String
         ".long" => {
           if let Operand::ImmI(operand) = operands[0] {
             let raw_bytes: [u8; 4] = unsafe {std::mem::transmute(operand)};
-            result.extend_from_slice(&raw_bytes[0..4]);
+            result.extend_from_slice(&raw_bytes[0..WORD_SIZE]);
           } else {
             panic!("Invalid operand for .long");
           }
@@ -211,6 +222,7 @@ fn encode_to_data_mem(statements: Vec<Statement>, label_map: &mut HashMap<String
       };
     }
   }
+  result.resize(usize::pow(2, (WORD_SIZE as u32) * CHAR_BITS), 0);
   result
 }
 
@@ -241,22 +253,156 @@ fn separate_segments(statements: Vec<Statement>) -> (Vec<Statement>, Vec<Stateme
   (text, data)
 }
 
-fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u8>, label_map: HashMap<String, usize>) {
-  
-  unimplemented!()
+#[derive(Default)]
+struct RegisterEnv {
+  a: u32,
+  b: u32,
+  c: u32,
+  d: u32,
+  bp: usize,
+  sp: usize,
+  pc: usize,
+}
+
+fn load_data(data: &Vec<u8>, addr: u32) -> u32 {
+  let addr = (addr & 0x00ffffff) as usize;
+  let mut result = 0;
+  for i in 0..WORD_SIZE {
+    result |= (data[addr + i] as u32) << (CHAR_BITS * i as u32);
+  }
+  result
+}
+
+fn store_data(data: &mut Vec<u8>, addr: u32, value: u32) {
+  let addr = (addr & 0x00ffffff) as usize;
+  for i in 0..WORD_SIZE {
+    data[addr + i] = (value >> (i as u32)) as u8;
+  }
+}
+
+fn eval(pc: u32, text: Vec<Vec<Statement>>, mut data: Vec<u8>, label_map: HashMap<String, usize>) {
+  println!("Eval text! {:?}", text);
+  let mut registers = vec![0u32, 0, 0, 0, 0, 0, pc];
+  while (registers[Register::PC as usize] as usize) < text.len() {
+    let block = &text[registers[Register::PC as usize] as usize];
+    println!("Eval block! {:?}", block);
+    for statement in block {
+      println!("Eval statement! {:?}", statement);
+      if let Statement::Instruction(ref opcode, ref operands)  = *statement {
+        use Opcode::*;
+        use Operand::*;
+        match *opcode {
+          Mov => {
+            match (&operands[0], &operands[1]) {
+              (&Reg(ref dst), &Reg(ref src)) => {
+                registers[*dst as usize] = registers[*src as usize];
+              },
+              (&Reg(ref dst), &ImmI(ref src)) => {
+                registers[*dst as usize] = *src as u32;
+              },
+              (&Reg(ref dst), &Label(ref src)) => {
+                registers[*dst as usize] = label_map[src] as u32;
+              },
+              _ => {panic!("Illegal Mov operands")},
+            }
+          },
+          Add => {
+            match (&operands[0], &operands[1]) {
+              (&Reg(ref dst), &Reg(ref src)) => {
+                registers[*dst as usize] += registers[*src as usize];
+              },
+              (&Reg(ref dst), &ImmI(ref src)) => {
+                registers[*dst as usize] += *src as u32;
+              },
+              (&Reg(ref dst), &Label(ref src)) => {
+                registers[*dst as usize] += label_map[src] as u32;
+              },
+              _ => {panic!("Illegal Add operands")},
+            }
+          },
+          Sub => {
+            match (&operands[0], &operands[1]) {
+              (&Reg(ref dst), &Reg(ref src)) => {
+                registers[*dst as usize] -= registers[*src as usize];
+              },
+              (&Reg(ref dst), &ImmI(ref src)) => {
+                registers[*dst as usize] -= *src as u32;
+              },
+              (&Reg(ref dst), &Label(ref src)) => {
+                registers[*dst as usize] -= label_map[src] as u32;
+              },
+              _ => {panic!("Illegal Sub operands")},
+            }
+          },
+          Load => {
+            match (&operands[0], &operands[1]) {
+              (&Reg(ref dst), &Reg(ref src)) => {
+                registers[*dst as usize] = load_data(&data, registers[*src as usize]);
+              },
+              (&Reg(ref dst), &ImmI(ref src)) => {
+                registers[*dst as usize] = load_data(&data, *src as u32);
+              },
+              (&Reg(ref dst), &Label(ref src)) => {
+                registers[*dst as usize] = load_data(&data, label_map[src] as u32);
+              },
+              _ => {panic!("Illegal Load operands")},
+            }
+          },
+          Store => {
+            match (&operands[0], &operands[1]) {
+              (&Reg(ref dst), &Reg(ref src)) => {
+                 store_data(&mut data, registers[*dst as usize], registers[*src as usize]);
+              },
+              (&Reg(ref dst), &ImmI(ref src)) => {
+                 store_data(&mut data, registers[*dst as usize], *src as u32);
+              },
+              (&Reg(ref dst), &Label(ref src)) => {
+                 store_data(&mut data, registers[*dst as usize], label_map[src] as u32);
+              },
+              _ => {panic!("Illegal Load operands")},
+            }
+          },
+          _ => {}
+        }
+      } else {
+        panic!("Illegal statement in text. Bug of encode_to_text_mem.");
+      }
+    }
+    registers[Register::PC as usize] += 1;
+  }
+  println!("regs: {:?}", registers);
 }
 
 fn main() {
-  let statements = parse(SAMPLE_PROGRAM);
+  let statements = parse(TEST);
   println!("{:?}", statements);
   let (text, data) = separate_segments(statements);
+  println!("separated text: {:?}", text);
+  println!("separated data: {:?}", data);
   let mut label_map = HashMap::new();
   let text_mem = encode_to_text_mem(text, &mut label_map);
   let data_mem = encode_to_data_mem(data, &mut label_map);
-  println!("{:?}", label_map);
-  println!("{:?}", data_mem);
-  //eval(0, text_mem, data_mem, label_map);
+  println!("data_mem: {:?}", &data_mem[0..10]);
+  eval(0, text_mem, data_mem, label_map);
 }
+static TEST: &'static str = r#"
+.text
+main:
+  add A, 1
+  add A, 2
+.data
+  .L0:
+  .long 4242
+  .L1:
+  .long 5656
+.text
+  mov B, A
+  mov C, .L0
+  load D, C
+  add C, 3
+  load BP, C
+ 
+"#;
 
 static SAMPLE_PROGRAM: &'static str = r#"
     .text
