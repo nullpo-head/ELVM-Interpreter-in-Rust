@@ -274,7 +274,7 @@ fn encode_to_data_mem(statements: Vec<Statement>, label_map: &mut HashMap<String
       };
     }
   }
-  result.resize(usize::pow(2, (WORD_SIZE as u32) * CHAR_BITS), 0);
+  result.resize(2 << (WORD_SIZE as u32 * CHAR_BITS), 0);
   result
 }
 
