@@ -5,3 +5,4 @@ authors = ["nullpo-head <abc.tkys+pub@gmail.com>"]
 
 [dependencies]
 combine = "2.3.1"
+getopts = "0.2"
