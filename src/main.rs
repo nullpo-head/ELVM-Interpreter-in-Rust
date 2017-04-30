@@ -383,9 +383,7 @@ fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u32>, label_map: HashMap
   let mut env = EvalEnv {pc: pc, data: data, label_map: label_map, ..Default::default()};
   'block: while env.pc < text.len() {
     let block = &text[env.pc];
-    //println!("Eval block! {:?}", block);
     'op: for statement in block {
-      //println!("Eval statement! {:?}", statement);
       if let Statement::Instruction(ref opcode, ref operands)  = *statement {
         use Opcode::*;
         match *opcode {
