@@ -1,8 +1,8 @@
 extern crate combine;
 extern crate getopts;
 
-use combine::char::{spaces, digit, letter, alpha_num, newline};
-use combine::{parser, between, any, one_of, many, many1, token, try, sep_by, optional, eof, satisfy, Parser, State, Stream, ParseResult};
+use combine::char::{spaces, digit, hex_digit, letter, alpha_num, newline};
+use combine::{parser, between, any, none_of, one_of, skip_many, many, many1, token, try, sep_by, optional, eof, satisfy, Parser, State, Stream, ParseResult};
 use combine::primitives::Consumed;
 use std::collections::HashMap;
 use std::ops::{Index, IndexMut};
@@ -62,10 +62,17 @@ enum Opcode {
   PseudoOp(String),
 }
 
-fn inline_spaces<'a, I>() -> Box<Parser<Input = I, Output = String> + 'a>
+fn inline_skipable<'a, I>() -> Box<Parser<Input = I, Output = String> + 'a>
   where I: 'a + Stream<Item=char>
 {
   Box::new(many(one_of(" \t".chars())))
+}
+
+fn skipable<'a, I>() -> Box<Parser<Input = I, Output = ()> + 'a>
+  where I: 'a + Stream<Item=char>
+{
+  let comment = token('#').with(many::<String, _>(none_of("\n".chars())).skip(newline()));
+  Box::new(spaces().and(optional(comment)).with(spaces()))
 }
 
 fn symbol<'a, I>() -> Box<Parser<Input = I, Output = String> + 'a> 
@@ -120,7 +127,7 @@ fn operands<I>(input: I) -> ParseResult<Vec<Operand>, I>
   })
     .or(uint_literal().map(|i| Operand::ImmI(i)))
     .or(string_literal().map(|s| Operand::ImmS(s)));
-  sep_by::<Vec<Operand>, _, _>(parse_op, optional(inline_spaces()).and(token(',')).skip(inline_spaces())).parse_stream(input)
+  sep_by::<Vec<Operand>, _, _>(parse_op, optional(inline_skipable()).and(token(',')).skip(inline_skipable())).parse_stream(input)
 }
 
 fn opcode<I>(input: I) -> ParseResult<Opcode, I>
@@ -154,10 +161,15 @@ fn opcode<I>(input: I) -> ParseResult<Opcode, I>
 }
 
 fn parse(src: &str) -> Vec<Statement> {
-  let instruction = optional(spaces()).with(parser(opcode)).skip(inline_spaces()).and(parser(operands)).map(|(opcode, operands)| Statement::Instruction(opcode, operands));
-  let label = optional(spaces()).with(symbol()).and(token(':')).map(|(id, _)| Statement::Label(id));
-  let statement = try(label).or(instruction).skip(inline_spaces()).skip(newline()).skip(spaces());
-  let mut program = many::<Vec<_>, _>(statement).skip(eof());
+  let instruction = parser(opcode).skip(inline_skipable()).then(|op| parser(move |input| {
+    match op {
+      Opcode::PseudoOp(ref pseudo_op) if *pseudo_op == ".loc" || *pseudo_op == ".file" => skip_many(none_of("\n".chars())).map(|_| Statement::Instruction(op.clone(), vec![])).parse_stream(input), // Skip the irregular-syntax operands of .loc and .file
+      _ => parser(operands).map(|operands| Statement::Instruction(op.clone(), operands)).parse_stream(input),
+    }
+  }));
+  let label = symbol().and(token(':')).map(|(id, _)| Statement::Label(id));
+  let statement = try(label).or(instruction).skip(inline_skipable()).skip(newline());
+  let mut program = many::<Vec<_>, _>(optional(skipable()).with(statement).skip(skipable())).skip(eof());
   program.parse(State::new(src)).unwrap().0
 }
 
@@ -223,6 +235,7 @@ fn encode_to_text_mem(statements: Vec<Statement>, label_map: &mut HashMap<String
             Exit => {
               ensure_len(&operands, 0);
             },
+            PseudoOp(ref pseudo_op) if *pseudo_op == ".loc" || *pseudo_op == ".file" => {/* Do Nothing */},
             _ => {
               ensure_len(&operands, 2);
               ensure_dst(&operands[0]);
@@ -455,5 +468,5 @@ fn main() {
     file.read_to_string(&mut eir_str).unwrap();
   }
   
-  interpret(eir_str.as_str());
+  interpret(&eir_str);
 }
