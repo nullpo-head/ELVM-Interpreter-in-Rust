@@ -26,7 +26,7 @@ enum Operand {
   Label(String),
   Reg(Register),
   ImmI(i32),
-  ImmS(String),
+  ImmS(Vec<u32>),
 }
 
 #[derive(Debug)]
@@ -86,21 +86,24 @@ fn symbol<'a, I>() -> Box<Parser<Input = I, Output = String> + 'a>
   Box::new(symbol_parser)
 }
 
-fn string_literal<'a, I>() -> Box<Parser<Input = I, Output = String> + 'a>
+fn string_literal<'a, I>() -> Box<Parser<Input = I, Output = Vec<u32>> + 'a>
   where I: 'a + Stream<Item=char>
 {
-  let quoted = many::<String, _>(satisfy(|c| c != '"').then(|c| {
+  let quoted = many::<Vec<u32>, _>(satisfy(|c| c != '"').then(|c| 
     parser(move |input| if c == '\\' {
-      any().map(|d| match d {
-        '\\' => '\\',
-        '"' => '"',
-        'n' => '\n',
-        _ => unimplemented!(),
-      }).parse_stream(input)
+      any().then(|d| parser(move |input| {
+        match d {
+        '\\' => Ok(('\\' as u32, Consumed::Consumed(input))),
+        '"' => Ok(('"' as u32, Consumed::Consumed(input))),
+        'n' => Ok(('\n' as u32, Consumed::Consumed(input))),
+        't' => Ok(('\t' as u32, Consumed::Consumed(input))),
+        'x' => many1::<String, _>(hex_digit()).map(|lit| u32::from_str_radix(&lit, 16).unwrap()).parse_stream(input),
+        escape => {println!("{}", escape); unimplemented!()},
+      }})).parse_stream(input)
     } else {
-      Ok((c, Consumed::Empty(input)))
+      Ok((c as u32, Consumed::Empty(input)))
     })
-  }));
+  ));
   Box::new(between(token('"'), token('"'), quoted))
 }
 
