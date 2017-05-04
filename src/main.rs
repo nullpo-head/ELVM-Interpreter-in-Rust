@@ -3,7 +3,7 @@ extern crate getopts;
 
 use combine::char::{spaces, digit, hex_digit, letter, alpha_num, newline};
 use combine::{parser, between, any, none_of, one_of, skip_many, many, many1, token, try, sep_by, optional, eof, satisfy, Parser, State, Stream, ParseResult};
-use combine::primitives::Consumed;
+use combine::primitives::{Consumed, SourcePosition};
 use std::collections::HashMap;
 use std::ops::{Index, IndexMut};
 use std::io;
@@ -163,17 +163,23 @@ fn opcode<I>(input: I) -> ParseResult<Opcode, I>
   }).parse_stream(input)
 }
 
-fn parse(src: &str) -> Vec<Statement> {
+fn parse(src: &str) -> Vec<(Statement, SourcePosition)> {
   let instruction = parser(opcode).skip(inline_skipable()).then(|op| parser(move |input| {
+    let _: State<_> = input;
+    let pos = input.position;
     match op {
-      Opcode::PseudoOp(ref pseudo_op) if *pseudo_op == ".loc" || *pseudo_op == ".file" => skip_many(none_of("\n".chars())).map(|_| Statement::Instruction(op.clone(), vec![])).parse_stream(input), // Skip the irregular-syntax operands of .loc and .file
-      _ => parser(operands).map(|operands| Statement::Instruction(op.clone(), operands)).parse_stream(input),
+      Opcode::PseudoOp(ref pseudo_op) if *pseudo_op == ".loc" || *pseudo_op == ".file" => skip_many(none_of("\n".chars())).map(|_| (Statement::Instruction(op.clone(), vec![]), pos)).parse_stream(input), // Skip the irregular-syntax operands of .loc and .file
+      _ => parser(operands).map(|operands| (Statement::Instruction(op.clone(), operands), pos)).parse_stream(input),
     }
   }));
-  let label = symbol().and(token(':')).map(|(id, _)| Statement::Label(id));
+  let label = parser(|input| {
+    let _: State<_> = input;
+    let pos = input.position;
+    symbol().and(token(':')).map(|(id, _)| (Statement::Label(id), pos)).parse_stream(input)
+  });
   let statement = try(label).or(instruction).skip(inline_skipable()).skip(newline());
   let mut program = many::<Vec<_>, _>(optional(skipable()).with(statement).skip(skipable())).skip(eof());
-  program.parse(State::new(src)).unwrap().0
+  program.parse(State::new(src)).expect("Parse Error.").0
 }
 
 #[derive(PartialEq)]
@@ -182,10 +188,30 @@ enum Segment {
   Data,
 }
 
-fn encode_to_text_mem(statements: Vec<Statement>, label_map: &mut HashMap<String, usize>) -> Vec<Vec<Statement>> {
+fn expect_dst(val: &Operand, opcode: &Opcode, pos: &SourcePosition) {
+  match *val {
+    Operand::Reg(_) => {},
+    _ => {panic!("Invalid operands for {:?}, line: {}, column: {}", opcode, pos.line, pos.column);},
+  };
+}
+fn expect_src(val: &Operand, opcode: &Opcode, pos: &SourcePosition) {
+  match *val {
+    Operand::Reg(_) => {},
+    Operand::ImmI(_) => {},
+    Operand::Label(_) => {},
+    _ => {panic!("Invalid operands for {:?}, line: {}, column: {}", opcode, pos.line, pos.column);},
+  };
+}
+fn expect_len(operands: &Vec<Operand>, len: usize, opcode: &Opcode, pos: &SourcePosition) {
+  if (*operands).len() != len {
+    panic!("{:?} needs {} operands, line: {}, column: {}", opcode, len, pos.line, pos.column);
+  };
+}
+
+fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> Vec<Vec<Statement>> {
   let mut result = vec![];
   let mut basic_block = vec![];
-  for (line, statement) in statements.into_iter().enumerate() {
+  for (statement, pos) in statements {
     match statement {
       Statement::Label(symbol) => {
         if basic_block.len() > 0 {
@@ -197,52 +223,33 @@ fn encode_to_text_mem(statements: Vec<Statement>, label_map: &mut HashMap<String
       Statement::Instruction(opcode, operands) => {
         use Opcode::*;
         {
-          let ensure_dst = |val| {
-            match val {
-              &Operand::Reg(_) => {},
-              _ => {panic!("Invalid operands for {:?}: {}", opcode, line);},
-            }
-          };
-          let ensure_src = |val| {
-            match val {
-              &Operand::Reg(_) => {},
-              &Operand::ImmI(_) => {},
-              &Operand::Label(_) => {},
-              _ => {panic!("Invalid operands for {:?}: {}", opcode, line);},
-            }
-          };
-          let ensure_len = |operands: &Vec<_>, len| {
-            if (*operands).len() != len {
-              panic!("{:?} needs {} operands: {}", opcode, len, line);
-            }
-          };
           match opcode {
+            PseudoOp(ref pseudo_op) if *pseudo_op == ".loc" || *pseudo_op == ".file" => continue, // Skip meaningless ops
             Jeq | Jne | Jlt | Jgt | Jle | Jge => {
-              ensure_len(&operands, 3);
-              ensure_src(&operands[0]);
-              ensure_dst(&operands[1]);
-              ensure_src(&operands[2]);
+              expect_len(&operands, 3, &opcode, &pos);
+              expect_src(&operands[0], &opcode, &pos);
+              expect_dst(&operands[1], &opcode, &pos);
+              expect_src(&operands[2], &opcode, &pos);
             }, 
             Jmp => {
-              ensure_len(&operands, 1);
-              ensure_src(&operands[0]);
+              expect_len(&operands, 1, &opcode, &pos);
+              expect_src(&operands[0], &opcode, &pos);
             },
             Getc => {
-              ensure_len(&operands, 1);
-              ensure_dst(&operands[0]);
+              expect_len(&operands, 1, &opcode, &pos);
+              expect_dst(&operands[0], &opcode, &pos);
             },
             Putc => {
-              ensure_len(&operands, 1);
-              ensure_src(&operands[0]);
+              expect_len(&operands, 1, &opcode, &pos);
+              expect_src(&operands[0], &opcode, &pos);
             },
             Exit => {
-              ensure_len(&operands, 0);
+              expect_len(&operands, 0, &opcode, &pos);
             },
-            PseudoOp(ref pseudo_op) if *pseudo_op == ".loc" || *pseudo_op == ".file" => {/* Do Nothing */},
             _ => {
-              ensure_len(&operands, 2);
-              ensure_dst(&operands[0]);
-              ensure_src(&operands[1]);
+              expect_len(&operands, 2, &opcode, &pos);
+              expect_dst(&operands[0], &opcode, &pos);
+              expect_src(&operands[1], &opcode, &pos);
             },
           }
         }
@@ -263,42 +270,50 @@ fn encode_to_text_mem(statements: Vec<Statement>, label_map: &mut HashMap<String
   result
 }
 
-fn encode_to_data_mem(statements: Vec<Statement>, label_map: &mut HashMap<String, usize>) -> Vec<u32> {
+fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> Vec<u32> {
   let mut result = vec![];
-  for statement in statements {
-    if let Statement::Label(symbol) = statement {
-      label_map.insert(symbol, result.len());
-      continue;
-    }
-    if let Statement::Instruction(Opcode::PseudoOp(opcode), operands) = statement {
-      match opcode.as_str() {
-        ".long" => {
-          if let Operand::ImmI(operand) = operands[0] {
-            result.push(operand as u32);
-          } else {
-            panic!("Invalid operand for .long");
+  for (statement, pos) in statements {
+    match statement {
+      Statement::Label(symbol) => {
+        label_map.insert(symbol, result.len());
+        continue;
+      },
+      Statement::Instruction(opcode, mut operands) => {
+        if let Opcode::PseudoOp(ref pseudo_op) = opcode {
+          match pseudo_op.as_str() {
+            ".long" => {
+              expect_len(&operands, 1, &opcode, &pos);
+              if let Operand::ImmI(operand) = operands[0] {
+                result.push(operand as u32);
+              } else {
+                panic!("Invalid operand for .long, line: {}, column: {}", pos.line, pos.column);
+              }
+            },
+            ".string" => {
+              expect_len(&operands, 1, &opcode, &pos);
+              if let Operand::ImmS(mut operand) = operands.remove(0) {
+                result.append(&mut operand);
+              } else {
+                panic!("Invalid operand for .string, line: {}, column: {}", pos.line, pos.column);
+              }
+            },
+            opstr => {panic!("Invalid pseudo op in .data segment: {:?}, line: {}, column: {}", opstr, pos.line, pos.column);},
           }
-        },
-        ".string" => {
-          if let Operand::ImmS(ref operand) = operands[0] {
-            result.append(&mut operand.chars().map(|c| c as u32).collect());
-          } else {
-            panic!("Invalid operand for .string");
-          }
-        },
-        opstr => {panic!("Invalid opcode in .data segment: {}", opstr)},
-      };
+        } else {
+          panic!("Invalid opcode in .data segment: {:?}, line: {}, column: {}", opcode, pos.line, pos.column);
+        }
+      }
     }
   }
   result.resize(2 << (WORD_SIZE as u32 * CHAR_BITS), 0);
   result
 }
 
-fn separate_segments(statements: Vec<Statement>) -> (Vec<Statement>, Vec<Statement>) {
+fn separate_segments(statements: Vec<(Statement, SourcePosition)>) -> (Vec<(Statement, SourcePosition)>, Vec<(Statement, SourcePosition)>) {
   let mut text = vec![];
   let mut data = vec![];
   let mut seg = Segment::Text;
-  for statement in statements {
+  for (statement, pos) in statements {
     if let Statement::Instruction(Opcode::PseudoOp(ref opcode), _) = statement {
       match (*opcode).as_str() {
         ".text" => {
@@ -313,9 +328,9 @@ fn separate_segments(statements: Vec<Statement>) -> (Vec<Statement>, Vec<Stateme
       }
     }
     if seg == Segment::Text {
-      text.push(statement);
+      text.push((statement, pos));
     } else if seg == Segment::Data {
-      data.push(statement);
+      data.push((statement, pos));
     }
   }
   (text, data)
@@ -411,10 +426,10 @@ fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u32>, label_map: HashMap
             let addr = (src(&operands[1], &env) & WORD_MASK) as usize;
             env.data[addr] = src(&operands[0], &env);
           },
-          Putc => {io::stdout().write(&[src(&operands[0], &env) as u8]).unwrap();},
+          Putc => {io::stdout().write(&[src(&operands[0], &env) as u8]).expect("write error");},
           Getc => {
             let mut buf = [0; 1];
-            let c = io::stdin().read(&mut buf).expect("Input error");
+            let c = io::stdin().read(&mut buf).expect("read error");
             *dst(&operands[0], &mut env) = c as u32;
           },
           Eq | Ne | Lt | Gt | Le | Ge => {
@@ -467,8 +482,8 @@ fn main() {
 
   let mut eir_str = String::new();
   {
-    let mut file = File::open(&args[1]).unwrap();
-    file.read_to_string(&mut eir_str).unwrap();
+    let mut file = File::open(&args[1]).expect("Could not open file");
+    file.read_to_string(&mut eir_str).expect("Could not read file");
   }
   
   interpret(&eir_str);
