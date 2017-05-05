@@ -267,6 +267,7 @@ fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
   if basic_block.len() > 0 {
     result.push(basic_block);
   }
+  label_map.insert(String::from("_etext"), result.len());
   result
 }
 
@@ -305,6 +306,7 @@ fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
       }
     }
   }
+  label_map.insert(String::from("_edata"), result.len());
   result.resize(2 << (WORD_SIZE as u32 * CHAR_BITS), 0);
   result
 }
