@@ -1,0 +1,63 @@
+=== test/elc.in ===
+var main = function(getchar, putchar) {
+var a = 0;
+var b = 0;
+var c = 0;
+var d = 0;
+var bp = 0;
+var sp = 0;
+var pc = 0;
+var mem = new Int32Array(1 << 24);
+mem[0] = 1;
+var running = true;
+
+var func0 = function() {
+ while (0 <= pc && pc < 512 && running) {
+  switch (pc) {
+  case -1:  // dummy
+   break;
+
+  case 0:
+   if (true) pc = 1 - 1;
+   break;
+
+  case 1:
+   a = getchar();
+   if (a == 0) pc = 3 - 1;
+   break;
+
+  case 2:
+   putchar(a);
+   if (true) pc = 1 - 1;
+   break;
+
+  case 3:
+   running = false; break;
+  }
+  pc++;
+ }
+};
+
+while (running) {
+ switch (pc / 512 | 0) {
+ case 0:
+  func0();
+  break;
+ }
+}
+};
+if (typeof require != 'undefined') {
+ var sys = require('sys');
+ var input = null;
+ var ip = 0;
+ var getchar = function() {
+  if (input === null)
+   input = require('fs').readFileSync('/dev/stdin');
+  return input[ip++] | 0;
+ };
+ var putchar = function(c) {
+  sys.print(String.fromCharCode(c & 255));
+ };
+ main(getchar, putchar);
+}
+

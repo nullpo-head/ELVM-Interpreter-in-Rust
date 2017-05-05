@@ -1,0 +1,52 @@
+	.text
+main:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.file 1 "out/addsub.c"
+	.loc 1 6 0
+	# }
+	.loc 1 4 0
+	#   putchar('5' - 3);
+	mov A, 53
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 3
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	putc A
+	add SP, 1
+	.loc 1 5 0
+	#   return 0;
+	mov A, 53
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 3
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	putc A
+	add SP, 1
+	.loc 1 6 0
+	# }
+	mov A, 0
+	mov B, A
+	exit
+	exit

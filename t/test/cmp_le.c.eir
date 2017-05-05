@@ -1,0 +1,64 @@
+	.text
+main:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 1
+	.file 1 "out/cmp_le.c"
+	.loc 1 10 0
+	# }
+	.loc 1 5 0
+	#   if (c <= 'A')
+	mov A, 0
+	mov B, SP
+	getc A
+	jne .L0, A, 0
+	mov A, -1
+	.L0:
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.loc 1 6 0
+	#     putchar('X');
+	.loc 1 5 0
+	#   if (c <= 'A')
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 6 0
+	#     putchar('X');
+	mov A, 65
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L1, A, 0
+	mov A, 88
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	putc A
+	add SP, 1
+	jmp .L2
+	.L1:
+	mov A, 89
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	putc A
+	add SP, 1
+	.L2:
+	.loc 1 10 0
+	# }
+	mov A, 0
+	mov B, A
+	exit
+	exit

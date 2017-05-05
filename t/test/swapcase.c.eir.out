@@ -1,0 +1,12 @@
+=== test/swapcase_1.in ===
+0
+=== test/swapcase_2.in ===
+a
+=== test/swapcase_3.in ===
+z
+=== test/swapcase_4.in ===
+A
+=== test/swapcase_5.in ===
+Z
+=== test/swapcase_6.in ===
+$

@@ -1,0 +1,61 @@
+mov C, 65530
+mov B, 42
+store B, C
+putc B
+load A, C
+putc A
+mov C, 65531
+mov B, 43
+store B, C
+putc B
+load A, C
+putc A
+mov C, 65532
+mov B, 44
+store B, C
+putc B
+load A, C
+putc A
+mov C, 65533
+mov B, 45
+store B, C
+putc B
+load A, C
+putc A
+mov C, 65534
+mov B, 46
+store B, C
+putc B
+load A, C
+putc A
+mov C, 65535
+mov B, 47
+store B, C
+putc B
+load A, C
+putc A
+mov C, 65536
+mov B, 48
+store B, C
+putc B
+load A, C
+putc A
+mov C, 65537
+mov B, 49
+store B, C
+putc B
+load A, C
+putc A
+mov C, 65538
+mov B, 50
+store B, C
+putc B
+load A, C
+putc A
+mov C, 65539
+mov B, 51
+store B, C
+putc B
+load A, C
+putc A
+exit

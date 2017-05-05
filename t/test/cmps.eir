@@ -1,0 +1,133 @@
+mov A, 101
+putc A
+mov A, 113
+putc A
+mov A, 58
+putc A
+mov A, 32
+putc A
+mov A, 999
+eq A, 1000
+add A, 48
+putc A
+mov A, 1000
+eq A, 1000
+add A, 48
+putc A
+mov A, 1001
+eq A, 1000
+add A, 48
+putc A
+mov A, 10
+putc A
+mov A, 110
+putc A
+mov A, 101
+putc A
+mov A, 58
+putc A
+mov A, 32
+putc A
+mov A, 999
+ne A, 1000
+add A, 48
+putc A
+mov A, 1000
+ne A, 1000
+add A, 48
+putc A
+mov A, 1001
+ne A, 1000
+add A, 48
+putc A
+mov A, 10
+putc A
+mov A, 108
+putc A
+mov A, 116
+putc A
+mov A, 58
+putc A
+mov A, 32
+putc A
+mov A, 999
+lt A, 1000
+add A, 48
+putc A
+mov A, 1000
+lt A, 1000
+add A, 48
+putc A
+mov A, 1001
+lt A, 1000
+add A, 48
+putc A
+mov A, 10
+putc A
+mov A, 103
+putc A
+mov A, 116
+putc A
+mov A, 58
+putc A
+mov A, 32
+putc A
+mov A, 999
+gt A, 1000
+add A, 48
+putc A
+mov A, 1000
+gt A, 1000
+add A, 48
+putc A
+mov A, 1001
+gt A, 1000
+add A, 48
+putc A
+mov A, 10
+putc A
+mov A, 108
+putc A
+mov A, 101
+putc A
+mov A, 58
+putc A
+mov A, 32
+putc A
+mov A, 999
+le A, 1000
+add A, 48
+putc A
+mov A, 1000
+le A, 1000
+add A, 48
+putc A
+mov A, 1001
+le A, 1000
+add A, 48
+putc A
+mov A, 10
+putc A
+mov A, 103
+putc A
+mov A, 101
+putc A
+mov A, 58
+putc A
+mov A, 32
+putc A
+mov A, 999
+ge A, 1000
+add A, 48
+putc A
+mov A, 1000
+ge A, 1000
+add A, 48
+putc A
+mov A, 1001
+ge A, 1000
+add A, 48
+putc A
+mov A, 10
+putc A
+exit

@@ -1,0 +1,6 @@
+jeq: FTF
+jne: TFT
+jlt: TFF
+jgt: FFT
+jle: TTF
+jge: FTT

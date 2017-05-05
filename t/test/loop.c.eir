@@ -1,0 +1,241 @@
+	.text
+main:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 1
+	.file 1 "out/loop.c"
+	.loc 1 16 0
+	# }
+	.loc 1 14 0
+	#   }
+	.L0:
+	.loc 1 5 0
+	#     int c = getchar();
+	mov A, 1
+	jeq .L2, A, 0
+	.loc 1 14 0
+	#   }
+	.loc 1 6 0
+	#     if (c == -1 || c == 0)
+	mov A, 0
+	mov B, SP
+	getc A
+	jne .L3, A, 0
+	mov A, -1
+	.L3:
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.loc 1 7 0
+	#       break;
+	.loc 1 6 0
+	#     if (c == -1 || c == 0)
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 7 0
+	#       break;
+	mov A, 0
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, 1
+	jne .L4, A, 0
+	.loc 1 6 0
+	#     if (c == -1 || c == 0)
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 7 0
+	#       break;
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, A
+	ne B, 0
+	.L4:
+	mov A, B
+	jeq .L5, A, 0
+	jmp .L1
+	.L5:
+	.loc 1 12 0
+	#     }
+	.loc 1 9 0
+	#       c += 32;
+	mov A, 65
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 6 0
+	#     if (c == -1 || c == 0)
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, 0
+	jeq .L6, A, 0
+	.loc 1 9 0
+	#       c += 32;
+	.loc 1 6 0
+	#     if (c == -1 || c == 0)
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 9 0
+	#       c += 32;
+	mov A, 90
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, A
+	ne B, 0
+	.L6:
+	mov A, B
+	jeq .L7, A, 0
+	.loc 1 10 0
+	#     } else if (!(c < 'a' || c > 'z')) {
+	.loc 1 6 0
+	#     if (c == -1 || c == 0)
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 10 0
+	#     } else if (!(c < 'a' || c > 'z')) {
+	mov A, 32
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	jmp .L8
+	.L7:
+	.loc 1 12 0
+	#     }
+	.loc 1 10 0
+	#     } else if (!(c < 'a' || c > 'z')) {
+	.loc 1 6 0
+	#     if (c == -1 || c == 0)
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 10 0
+	#     } else if (!(c < 'a' || c > 'z')) {
+	mov A, 97
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	mov B, 1
+	jne .L9, A, 0
+	mov A, 122
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 6 0
+	#     if (c == -1 || c == 0)
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	mov B, A
+	ne B, 0
+	.L9:
+	mov A, B
+	eq A, 0
+	jeq .L10, A, 0
+	.loc 1 12 0
+	#     }
+	.loc 1 6 0
+	#     if (c == -1 || c == 0)
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 12 0
+	#     }
+	mov A, 32
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.L10:
+	.L8:
+	.loc 1 14 0
+	#   }
+	.loc 1 6 0
+	#     if (c == -1 || c == 0)
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	putc A
+	add SP, 1
+	jmp .L11
+	.L2:
+	.loc 1 14 0
+	#   }
+	jmp .L1
+	.L11:
+	jmp .L0
+	.L1:
+	.loc 1 16 0
+	# }
+	mov A, 0
+	mov B, A
+	exit
+	exit

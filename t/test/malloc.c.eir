@@ -1,0 +1,7783 @@
+	.text
+my_div:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 52
+	.file 1 "/Users/nullpo/dev/elvm/libc/_builtin.h"
+	.loc 1 35 0
+	# }
+	.loc 1 11 0
+	#   unsigned int r[24];
+	.loc 1 12 0
+	#   unsigned int i;
+	.loc 1 13 0
+	#   r[0] = 1;
+	.loc 1 14 0
+	#   for (i = 0;; i++) {
+	mov A, 1
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 12 0
+	#   unsigned int i;
+	mov A, BP
+	add A, 16777168
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 14 0
+	#   for (i = 0;; i++) {
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 1 21 0
+	#   }
+	.loc 1 15 0
+	#     d[i] = b;
+	mov A, 0
+	mov B, BP
+	add B, 16777167
+	store A, B
+	.loc 1 21 0
+	#   }
+	.L0:
+	.loc 1 16 0
+	#     unsigned int nb = b + b;
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 11 0
+	#   unsigned int r[24];
+	mov A, BP
+	add A, 16777192
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 13 0
+	#   r[0] = 1;
+	mov B, BP
+	add B, 16777167
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 1 17 0
+	#     if (nb > a || nb < b)
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777166
+	store A, B
+	.loc 1 18 0
+	#       break;
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 17 0
+	#     if (nb > a || nb < b)
+	mov B, BP
+	add B, 16777166
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	mov B, 1
+	jne .L54, A, 0
+	.loc 1 18 0
+	#       break;
+	.loc 1 17 0
+	#     if (nb > a || nb < b)
+	mov B, BP
+	add B, 16777166
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	mov B, A
+	ne B, 0
+	.L54:
+	mov A, B
+	jeq .L55, A, 0
+	.loc 1 18 0
+	#       break;
+	jmp .L2
+	.L55:
+	.loc 1 20 0
+	#     b = nb;
+	.loc 1 12 0
+	#   unsigned int i;
+	mov A, BP
+	add A, 16777168
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 13 0
+	#   r[0] = 1;
+	mov B, BP
+	add B, 16777167
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 20 0
+	#     b = nb;
+	.loc 1 12 0
+	#   unsigned int i;
+	mov A, BP
+	add A, 16777168
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 13 0
+	#   r[0] = 1;
+	mov B, BP
+	add B, 16777167
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 20 0
+	#     b = nb;
+	.loc 1 12 0
+	#   unsigned int i;
+	mov A, BP
+	add A, 16777168
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 20 0
+	#     b = nb;
+	.loc 1 13 0
+	#   r[0] = 1;
+	mov B, BP
+	add B, 16777167
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 20 0
+	#     b = nb;
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 1 21 0
+	#   }
+	.loc 1 17 0
+	#     if (nb > a || nb < b)
+	mov B, BP
+	add B, 16777166
+	load A, B
+	mov B, BP
+	add B, 3
+	store A, B
+	.loc 1 21 0
+	#   }
+	.L1:
+	.loc 1 15 0
+	#     d[i] = b;
+	.loc 1 13 0
+	#   r[0] = 1;
+	mov B, BP
+	add B, 16777167
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777167
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 1 21 0
+	#   }
+	jmp .L0
+	.L2:
+	.loc 1 24 0
+	#   for (;; i--) {
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777165
+	mov A, 0
+	store A, B
+	.loc 1 31 0
+	#       break;
+	.L3:
+	.loc 1 26 0
+	#     if (a >= v) {
+	mov A, 0
+	mov B, SP
+	.loc 1 11 0
+	#   unsigned int r[24];
+	mov A, BP
+	add A, 16777192
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 13 0
+	#   r[0] = 1;
+	mov B, BP
+	add B, 16777167
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777164
+	store A, B
+	.loc 1 29 0
+	#     }
+	.loc 1 27 0
+	#       q += r[i];
+	.loc 1 26 0
+	#     if (a >= v) {
+	mov B, BP
+	add B, 16777164
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L56, A, 0
+	.loc 1 29 0
+	#     }
+	.loc 1 28 0
+	#       a -= v;
+	.loc 1 24 0
+	#   for (;; i--) {
+	mov B, BP
+	add B, 16777165
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 28 0
+	#       a -= v;
+	.loc 1 12 0
+	#   unsigned int i;
+	mov A, BP
+	add A, 16777168
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 13 0
+	#   r[0] = 1;
+	mov B, BP
+	add B, 16777167
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777165
+	store A, B
+	.loc 1 29 0
+	#     }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 26 0
+	#     if (a >= v) {
+	mov B, BP
+	add B, 16777164
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 2
+	store A, B
+	.L56:
+	.loc 1 31 0
+	#       break;
+	.loc 1 13 0
+	#   r[0] = 1;
+	mov B, BP
+	add B, 16777167
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 31 0
+	#       break;
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	jeq .L57, A, 0
+	jmp .L5
+	.L57:
+	.L4:
+	.loc 1 25 0
+	#     unsigned int v = d[i];
+	.loc 1 13 0
+	#   r[0] = 1;
+	mov B, BP
+	add B, 16777167
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	sub A, 1
+	mov B, BP
+	add B, 16777167
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 1 31 0
+	#       break;
+	jmp .L3
+	.L5:
+	.loc 1 34 0
+	#   o->rem = a;
+	.loc 1 24 0
+	#   for (;; i--) {
+	mov B, BP
+	add B, 16777165
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 4
+	load A, B
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 1 35 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 4
+	load A, B
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	add A, 1
+	store B, A
+	load A, SP
+	add SP, 1
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+__builtin_mul:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 53
+	.loc 1 70 0
+	# }
+	.loc 1 39 0
+	#   if (a < b) {
+	.loc 1 43 0
+	#   }
+	.loc 1 40 0
+	#     v = a;
+	.loc 1 35 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L58, A, 0
+	.loc 1 43 0
+	#   }
+	.loc 1 41 0
+	#     a = b;
+	.loc 1 35 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.loc 1 42 0
+	#     b = v;
+	.loc 1 35 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, BP
+	add B, 2
+	store A, B
+	.loc 1 43 0
+	#   }
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, BP
+	add B, 3
+	store A, B
+	.L58:
+	.loc 1 45 0
+	#     return a;
+	.loc 1 35 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 45 0
+	#     return a;
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	jeq .L59, A, 0
+	.loc 1 35 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.L59:
+	.loc 1 47 0
+	#     return 0;
+	.loc 1 35 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 47 0
+	#     return 0;
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	jeq .L60, A, 0
+	mov A, 0
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.L60:
+	.loc 1 49 0
+	#   int r[24];
+	.loc 1 50 0
+	#   for (i = 0, e = 1, v = a;; i++) {
+	.loc 1 58 0
+	#   }
+	.loc 1 51 0
+	#     d[i] = v;
+	mov A, 0
+	mov B, BP
+	add B, 16777215
+	store A, B
+	mov A, 1
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.loc 1 35 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.loc 1 58 0
+	#   }
+	.L6:
+	.loc 1 52 0
+	#     r[i] = e;
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 52 0
+	#     r[i] = e;
+	.loc 1 49 0
+	#   int r[24];
+	mov A, BP
+	add A, 16777189
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 1 53 0
+	#     v += v;
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 53 0
+	#     v += v;
+	.loc 1 50 0
+	#   for (i = 0, e = 1, v = a;; i++) {
+	mov A, BP
+	add A, 16777165
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 1 54 0
+	#     int ne = e + e;
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.loc 1 55 0
+	#     if (ne < e || ne > b)
+	mov A, 0
+	mov B, SP
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777164
+	store A, B
+	.loc 1 56 0
+	#       break;
+	.loc 1 55 0
+	#     if (ne < e || ne > b)
+	mov B, BP
+	add B, 16777164
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	mov B, 1
+	jne .L61, A, 0
+	.loc 1 56 0
+	#       break;
+	.loc 1 35 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 55 0
+	#     if (ne < e || ne > b)
+	mov B, BP
+	add B, 16777164
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	mov B, A
+	ne B, 0
+	.L61:
+	mov A, B
+	jeq .L62, A, 0
+	.loc 1 56 0
+	#       break;
+	jmp .L8
+	.L62:
+	.loc 1 58 0
+	#   }
+	.loc 1 55 0
+	#     if (ne < e || ne > b)
+	mov B, BP
+	add B, 16777164
+	load A, B
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.loc 1 58 0
+	#   }
+	.L7:
+	.loc 1 51 0
+	#     d[i] = v;
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777215
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 1 58 0
+	#   }
+	jmp .L6
+	.L8:
+	.loc 1 61 0
+	#   for (;; i--) {
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777163
+	mov A, 0
+	store A, B
+	.loc 1 67 0
+	#       break;
+	.L9:
+	.loc 1 65 0
+	#     }
+	.loc 1 63 0
+	#       x += d[i];
+	.loc 1 50 0
+	#   for (i = 0, e = 1, v = a;; i++) {
+	mov A, BP
+	add A, 16777165
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 35 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L63, A, 0
+	.loc 1 65 0
+	#     }
+	.loc 1 64 0
+	#       b -= r[i];
+	.loc 1 61 0
+	#   for (;; i--) {
+	mov B, BP
+	add B, 16777163
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 64 0
+	#       b -= r[i];
+	.loc 1 49 0
+	#   int r[24];
+	mov A, BP
+	add A, 16777189
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777163
+	store A, B
+	.loc 1 65 0
+	#     }
+	.loc 1 35 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 65 0
+	#     }
+	.loc 1 50 0
+	#   for (i = 0, e = 1, v = a;; i++) {
+	mov A, BP
+	add A, 16777165
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 3
+	store A, B
+	.L63:
+	.loc 1 67 0
+	#       break;
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 67 0
+	#       break;
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	jeq .L64, A, 0
+	jmp .L11
+	.L64:
+	.L10:
+	.loc 1 62 0
+	#     if (b >= r[i]) {
+	.loc 1 39 0
+	#   if (a < b) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	sub A, 1
+	mov B, BP
+	add B, 16777215
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 1 67 0
+	#       break;
+	jmp .L9
+	.L11:
+	.loc 1 70 0
+	# }
+	.loc 1 61 0
+	#   for (;; i--) {
+	mov B, BP
+	add B, 16777163
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+__builtin_div:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 2
+	.loc 1 78 0
+	# }
+	.loc 1 74 0
+	#     return a;
+	.loc 1 70 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 74 0
+	#     return a;
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	jeq .L65, A, 0
+	.loc 1 70 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.L65:
+	.loc 1 76 0
+	#   my_div(a, b, &r);
+	.loc 1 77 0
+	#   return r.quot;
+	mov A, BP
+	add A, -2
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 70 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L66
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp my_div
+	.L66:
+	mov A, B
+	add SP, 3
+	.loc 1 78 0
+	# }
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+__builtin_mod:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 2
+	.loc 1 84 0
+	# }
+	.loc 1 82 0
+	#   my_div(a, b, &r);
+	.loc 1 83 0
+	#   return r.rem;
+	mov A, BP
+	add A, -2
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 78 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L67
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp my_div
+	.L67:
+	mov A, B
+	add SP, 3
+	.loc 1 84 0
+	# }
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.data 0
+__builtin_bits_table:
+	.long 8388608
+	.long 4194304
+	.long 2097152
+	.long 1048576
+	.long 524288
+	.long 262144
+	.long 131072
+	.long 65536
+	.long 32768
+	.long 16384
+	.long 8192
+	.long 4096
+	.long 2048
+	.long 1024
+	.long 512
+	.long 256
+	.long 128
+	.long 64
+	.long 32
+	.long 16
+	.long 8
+	.long 4
+	.long 2
+	.long 1
+	.text
+__builtin_and:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 5
+	.loc 1 107 0
+	# }
+	.loc 1 99 0
+	#   for (int i = 0; i < 24; i++) {
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777215
+	mov A, 0
+	store A, B
+	.loc 1 104 0
+	#       r += t;
+	.loc 1 100 0
+	#     int t = __builtin_bits_table[i];
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777214
+	mov A, 0
+	store A, B
+	.loc 1 104 0
+	#       r += t;
+	.L12:
+	.loc 1 100 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 24
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L68, A, 0
+	jmp .L69
+	.L68:
+	.loc 1 104 0
+	#       r += t;
+	jmp .L14
+	.L69:
+	.loc 1 101 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov A, 0
+	mov B, SP
+	.loc 1 84 0
+	# }
+	mov A, __builtin_bits_table
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 100 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.loc 1 102 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	mov A, 0
+	mov B, SP
+	.loc 1 101 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 84 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L70, A, 0
+	.loc 1 102 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	.loc 1 84 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 102 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	.loc 1 101 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 2
+	store A, B
+	.loc 1 102 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	mov A, 1
+	jmp .L71
+	.L70:
+	mov A, 0
+	.L71:
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 1 103 0
+	#     if (a1 && b1)
+	mov A, 0
+	mov B, SP
+	.loc 1 101 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 84 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L72, A, 0
+	.loc 1 103 0
+	#     if (a1 && b1)
+	.loc 1 84 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 103 0
+	#     if (a1 && b1)
+	.loc 1 101 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 3
+	store A, B
+	.loc 1 103 0
+	#     if (a1 && b1)
+	mov A, 1
+	jmp .L73
+	.L72:
+	mov A, 0
+	.L73:
+	mov B, BP
+	add B, 16777211
+	store A, B
+	.loc 1 104 0
+	#       r += t;
+	.loc 1 102 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov B, 0
+	jeq .L74, A, 0
+	.loc 1 103 0
+	#     if (a1 && b1)
+	mov B, BP
+	add B, 16777211
+	load A, B
+	mov B, A
+	ne B, 0
+	.L74:
+	mov A, B
+	jeq .L75, A, 0
+	.loc 1 104 0
+	#       r += t;
+	.loc 1 99 0
+	#   for (int i = 0; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 101 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.L75:
+	.loc 1 104 0
+	#       r += t;
+	.L13:
+	.loc 1 100 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777214
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 1 104 0
+	#       r += t;
+	jmp .L12
+	.L14:
+	.loc 1 107 0
+	# }
+	.loc 1 99 0
+	#   for (int i = 0; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+__builtin_or:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 5
+	.loc 1 119 0
+	# }
+	.loc 1 111 0
+	#   for (int i = 0; i < 24; i++) {
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777215
+	mov A, 0
+	store A, B
+	.loc 1 116 0
+	#       r += t;
+	.loc 1 112 0
+	#     int t = __builtin_bits_table[i];
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777214
+	mov A, 0
+	store A, B
+	.loc 1 116 0
+	#       r += t;
+	.L15:
+	.loc 1 112 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 24
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L76, A, 0
+	jmp .L77
+	.L76:
+	.loc 1 116 0
+	#       r += t;
+	jmp .L17
+	.L77:
+	.loc 1 113 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov A, 0
+	mov B, SP
+	.loc 1 84 0
+	# }
+	mov A, __builtin_bits_table
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 112 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.loc 1 114 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	mov A, 0
+	mov B, SP
+	.loc 1 113 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 107 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L78, A, 0
+	.loc 1 114 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	.loc 1 107 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 114 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	.loc 1 113 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 2
+	store A, B
+	.loc 1 114 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	mov A, 1
+	jmp .L79
+	.L78:
+	mov A, 0
+	.L79:
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 1 115 0
+	#     if (a1 || b1)
+	mov A, 0
+	mov B, SP
+	.loc 1 113 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 107 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L80, A, 0
+	.loc 1 115 0
+	#     if (a1 || b1)
+	.loc 1 107 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 115 0
+	#     if (a1 || b1)
+	.loc 1 113 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 3
+	store A, B
+	.loc 1 115 0
+	#     if (a1 || b1)
+	mov A, 1
+	jmp .L81
+	.L80:
+	mov A, 0
+	.L81:
+	mov B, BP
+	add B, 16777211
+	store A, B
+	.loc 1 116 0
+	#       r += t;
+	.loc 1 114 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov B, 1
+	jne .L82, A, 0
+	.loc 1 115 0
+	#     if (a1 || b1)
+	mov B, BP
+	add B, 16777211
+	load A, B
+	mov B, A
+	ne B, 0
+	.L82:
+	mov A, B
+	jeq .L83, A, 0
+	.loc 1 116 0
+	#       r += t;
+	.loc 1 111 0
+	#   for (int i = 0; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 113 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.L83:
+	.loc 1 116 0
+	#       r += t;
+	.L16:
+	.loc 1 112 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777214
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 1 116 0
+	#       r += t;
+	jmp .L15
+	.L17:
+	.loc 1 119 0
+	# }
+	.loc 1 111 0
+	#   for (int i = 0; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+__builtin_xor:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 5
+	.loc 1 131 0
+	# }
+	.loc 1 123 0
+	#   for (int i = 0; i < 24; i++) {
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777215
+	mov A, 0
+	store A, B
+	.loc 1 128 0
+	#       r += t;
+	.loc 1 124 0
+	#     int t = __builtin_bits_table[i];
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777214
+	mov A, 0
+	store A, B
+	.loc 1 128 0
+	#       r += t;
+	.L18:
+	.loc 1 124 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 24
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L84, A, 0
+	jmp .L85
+	.L84:
+	.loc 1 128 0
+	#       r += t;
+	jmp .L20
+	.L85:
+	.loc 1 125 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov A, 0
+	mov B, SP
+	.loc 1 84 0
+	# }
+	mov A, __builtin_bits_table
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 124 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.loc 1 126 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	mov A, 0
+	mov B, SP
+	.loc 1 125 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 119 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L86, A, 0
+	.loc 1 126 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	.loc 1 119 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 126 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	.loc 1 125 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 2
+	store A, B
+	.loc 1 126 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	mov A, 1
+	jmp .L87
+	.L86:
+	mov A, 0
+	.L87:
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 1 127 0
+	#     if (a1 != b1)
+	mov A, 0
+	mov B, SP
+	.loc 1 125 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 119 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L88, A, 0
+	.loc 1 127 0
+	#     if (a1 != b1)
+	.loc 1 119 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 127 0
+	#     if (a1 != b1)
+	.loc 1 125 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 3
+	store A, B
+	.loc 1 127 0
+	#     if (a1 != b1)
+	mov A, 1
+	jmp .L89
+	.L88:
+	mov A, 0
+	.L89:
+	mov B, BP
+	add B, 16777211
+	store A, B
+	.loc 1 128 0
+	#       r += t;
+	.loc 1 126 0
+	#     int b1 = __BUILTIN_TO_BIT(b, t);
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 127 0
+	#     if (a1 != b1)
+	mov B, BP
+	add B, 16777211
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	ne A, B
+	jeq .L90, A, 0
+	.loc 1 128 0
+	#       r += t;
+	.loc 1 123 0
+	#   for (int i = 0; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 125 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.L90:
+	.loc 1 128 0
+	#       r += t;
+	.L19:
+	.loc 1 124 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777214
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 1 128 0
+	#       r += t;
+	jmp .L18
+	.L20:
+	.loc 1 131 0
+	# }
+	.loc 1 123 0
+	#   for (int i = 0; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+__builtin_not:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 4
+	.loc 1 142 0
+	# }
+	.loc 1 135 0
+	#   for (int i = 0; i < 24; i++) {
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777215
+	mov A, 0
+	store A, B
+	.loc 1 139 0
+	#       r += t;
+	.loc 1 136 0
+	#     int t = __builtin_bits_table[i];
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777214
+	mov A, 0
+	store A, B
+	.loc 1 139 0
+	#       r += t;
+	.L21:
+	.loc 1 136 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 24
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L91, A, 0
+	jmp .L92
+	.L91:
+	.loc 1 139 0
+	#       r += t;
+	jmp .L23
+	.L92:
+	.loc 1 137 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov A, 0
+	mov B, SP
+	.loc 1 84 0
+	# }
+	mov A, __builtin_bits_table
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 136 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.loc 1 138 0
+	#     if (!a1)
+	mov A, 0
+	mov B, SP
+	.loc 1 137 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 131 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L93, A, 0
+	.loc 1 138 0
+	#     if (!a1)
+	.loc 1 131 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 138 0
+	#     if (!a1)
+	.loc 1 137 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 2
+	store A, B
+	.loc 1 138 0
+	#     if (!a1)
+	mov A, 1
+	jmp .L94
+	.L93:
+	mov A, 0
+	.L94:
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 1 139 0
+	#       r += t;
+	.loc 1 138 0
+	#     if (!a1)
+	mov B, BP
+	add B, 16777212
+	load A, B
+	eq A, 0
+	jeq .L95, A, 0
+	.loc 1 139 0
+	#       r += t;
+	.loc 1 135 0
+	#   for (int i = 0; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 137 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.L95:
+	.loc 1 139 0
+	#       r += t;
+	.L22:
+	.loc 1 136 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777214
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 1 139 0
+	#       r += t;
+	jmp .L21
+	.L23:
+	.loc 1 142 0
+	# }
+	.loc 1 135 0
+	#   for (int i = 0; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+__builtin_shl:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 4
+	.loc 1 153 0
+	# }
+	.loc 1 146 0
+	#   for (int i = b; i < 24; i++) {
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777215
+	mov A, 0
+	store A, B
+	.loc 1 150 0
+	#       r += __builtin_bits_table[i-b];
+	.loc 1 147 0
+	#     int t = __builtin_bits_table[i];
+	mov A, 0
+	mov B, SP
+	.loc 1 142 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.loc 1 150 0
+	#       r += __builtin_bits_table[i-b];
+	.L24:
+	.loc 1 147 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 24
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L96, A, 0
+	jmp .L97
+	.L96:
+	.loc 1 150 0
+	#       r += __builtin_bits_table[i-b];
+	jmp .L26
+	.L97:
+	.loc 1 148 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov A, 0
+	mov B, SP
+	.loc 1 84 0
+	# }
+	mov A, __builtin_bits_table
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 147 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.loc 1 149 0
+	#     if (a1)
+	mov A, 0
+	mov B, SP
+	.loc 1 148 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 142 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L98, A, 0
+	.loc 1 149 0
+	#     if (a1)
+	.loc 1 142 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 149 0
+	#     if (a1)
+	.loc 1 148 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 2
+	store A, B
+	.loc 1 149 0
+	#     if (a1)
+	mov A, 1
+	jmp .L99
+	.L98:
+	mov A, 0
+	.L99:
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 1 150 0
+	#       r += __builtin_bits_table[i-b];
+	.loc 1 149 0
+	#     if (a1)
+	mov B, BP
+	add B, 16777212
+	load A, B
+	jeq .L100, A, 0
+	.loc 1 150 0
+	#       r += __builtin_bits_table[i-b];
+	.loc 1 146 0
+	#   for (int i = b; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 150 0
+	#       r += __builtin_bits_table[i-b];
+	.loc 1 84 0
+	# }
+	mov A, __builtin_bits_table
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 150 0
+	#       r += __builtin_bits_table[i-b];
+	.loc 1 147 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 142 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.L100:
+	.loc 1 150 0
+	#       r += __builtin_bits_table[i-b];
+	.L25:
+	.loc 1 147 0
+	#     int t = __builtin_bits_table[i];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777214
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 1 150 0
+	#       r += __builtin_bits_table[i-b];
+	jmp .L24
+	.L26:
+	.loc 1 153 0
+	# }
+	.loc 1 146 0
+	#   for (int i = b; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+__builtin_shr:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 4
+	.loc 1 164 0
+	# }
+	.loc 1 157 0
+	#   for (int i = b; i < 24; i++) {
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777215
+	mov A, 0
+	store A, B
+	.loc 1 161 0
+	#       r += __builtin_bits_table[i];
+	.loc 1 158 0
+	#     int t = __builtin_bits_table[i-b];
+	mov A, 0
+	mov B, SP
+	.loc 1 153 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.loc 1 161 0
+	#       r += __builtin_bits_table[i];
+	.L27:
+	.loc 1 158 0
+	#     int t = __builtin_bits_table[i-b];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 24
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L101, A, 0
+	jmp .L102
+	.L101:
+	.loc 1 161 0
+	#       r += __builtin_bits_table[i];
+	jmp .L29
+	.L102:
+	.loc 1 159 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov A, 0
+	mov B, SP
+	.loc 1 84 0
+	# }
+	mov A, __builtin_bits_table
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 159 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	.loc 1 158 0
+	#     int t = __builtin_bits_table[i-b];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 153 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.loc 1 160 0
+	#     if (a1)
+	mov A, 0
+	mov B, SP
+	.loc 1 159 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 153 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L103, A, 0
+	.loc 1 160 0
+	#     if (a1)
+	.loc 1 153 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 160 0
+	#     if (a1)
+	.loc 1 159 0
+	#     int a1 = __BUILTIN_TO_BIT(a, t);
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 2
+	store A, B
+	.loc 1 160 0
+	#     if (a1)
+	mov A, 1
+	jmp .L104
+	.L103:
+	mov A, 0
+	.L104:
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 1 161 0
+	#       r += __builtin_bits_table[i];
+	.loc 1 160 0
+	#     if (a1)
+	mov B, BP
+	add B, 16777212
+	load A, B
+	jeq .L105, A, 0
+	.loc 1 161 0
+	#       r += __builtin_bits_table[i];
+	.loc 1 157 0
+	#   for (int i = b; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 161 0
+	#       r += __builtin_bits_table[i];
+	.loc 1 84 0
+	# }
+	mov A, __builtin_bits_table
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 1 158 0
+	#     int t = __builtin_bits_table[i-b];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.L105:
+	.loc 1 161 0
+	#       r += __builtin_bits_table[i];
+	.L28:
+	.loc 1 158 0
+	#     int t = __builtin_bits_table[i-b];
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777214
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 1 161 0
+	#       r += __builtin_bits_table[i];
+	jmp .L27
+	.L29:
+	.loc 1 164 0
+	# }
+	.loc 1 157 0
+	#   for (int i = b; i < 24; i++) {
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+print_str:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.file 2 "/Users/nullpo/dev/elvm/libc/_raw_print.h"
+	.loc 2 9 0
+	#     putchar(*p);
+	.L30:
+	.loc 1 164 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, B
+	jeq .L106, A, 0
+	jmp .L107
+	.L106:
+	.loc 2 9 0
+	#     putchar(*p);
+	jmp .L32
+	.L107:
+	.loc 1 164 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	putc A
+	add SP, 1
+	.loc 2 9 0
+	#     putchar(*p);
+	.L31:
+	.loc 1 164 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 2
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 2 9 0
+	#     putchar(*p);
+	jmp .L30
+	.L32:
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+stringify_int:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 2 20 0
+	# }
+	.loc 2 14 0
+	#   do {
+	mov A, 0
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 9 0
+	#     putchar(*p);
+	mov B, BP
+	add B, 3
+	load A, B
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 2 18 0
+	#   } while (v);
+	.L33:
+	.loc 2 16 0
+	#     *p = v % 10 + '0';
+	.loc 2 9 0
+	#     putchar(*p);
+	mov B, BP
+	add B, 3
+	load A, B
+	sub A, 1
+	mov B, BP
+	add B, 3
+	store A, B
+	.loc 2 17 0
+	#     v /= 10;
+	.loc 2 9 0
+	#     putchar(*p);
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 17 0
+	#     v /= 10;
+	mov A, 10
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L108
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_mod
+	.L108:
+	mov A, B
+	add SP, 2
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 48
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 9 0
+	#     putchar(*p);
+	mov B, BP
+	add B, 3
+	load A, B
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 2 18 0
+	#   } while (v);
+	.loc 2 9 0
+	#     putchar(*p);
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 18 0
+	#   } while (v);
+	mov A, 10
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L109
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_div
+	.L109:
+	mov A, B
+	add SP, 2
+	mov B, BP
+	add B, 2
+	store A, B
+	.loc 2 9 0
+	#     putchar(*p);
+	mov B, BP
+	add B, 2
+	load A, B
+	jeq .L110, A, 0
+	.loc 2 18 0
+	#   } while (v);
+	jmp .L33
+	.L110:
+	.L34:
+	.loc 2 20 0
+	# }
+	.loc 2 9 0
+	#     putchar(*p);
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+print_int:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 32
+	.loc 2 25 0
+	# }
+	.loc 2 24 0
+	#   print_str(stringify_int(v, buf + sizeof(buf) - 1));
+	.loc 2 25 0
+	# }
+	.loc 2 24 0
+	#   print_str(stringify_int(v, buf + sizeof(buf) - 1));
+	mov A, BP
+	add A, 16777184
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 25 0
+	# }
+	mov A, 32
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 20 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L111
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp stringify_int
+	.L111:
+	mov A, B
+	add SP, 2
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L112
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp print_str
+	.L112:
+	mov A, B
+	add SP, 1
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+stringify_hex:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 2
+	.loc 2 44 0
+	# }
+	.loc 2 29 0
+	#   int c;
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777215
+	mov A, 0
+	store A, B
+	.loc 2 30 0
+	#   *p = '\0';
+	.loc 2 31 0
+	#   if (v < 0) {
+	mov A, 0
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 25 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 2 34 0
+	#   }
+	.loc 2 32 0
+	#     v = -v;
+	.loc 2 25 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 32 0
+	#     v = -v;
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L113, A, 0
+	.loc 2 34 0
+	#   }
+	.loc 2 33 0
+	#     is_negative = 1;
+	mov A, 0
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 25 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 2
+	store A, B
+	.loc 2 34 0
+	#   }
+	mov A, 1
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.L113:
+	.loc 2 40 0
+	#   } while (v);
+	.L35:
+	.loc 2 37 0
+	#     c = v % 16;
+	.loc 2 25 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	sub A, 1
+	mov B, BP
+	add B, 3
+	store A, B
+	.loc 2 38 0
+	#     *p = c < 10 ? c + '0' : c - 10 + 'a';
+	.loc 2 25 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 38 0
+	#     *p = c < 10 ? c + '0' : c - 10 + 'a';
+	mov A, 16
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L114
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_mod
+	.L114:
+	mov A, B
+	add SP, 2
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.loc 2 39 0
+	#     v /= 16;
+	.loc 2 30 0
+	#   *p = '\0';
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 39 0
+	#     v /= 16;
+	mov A, 10
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L115, A, 0
+	.loc 2 30 0
+	#   *p = '\0';
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 39 0
+	#     v /= 16;
+	mov A, 48
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	jmp .L116
+	.L115:
+	.loc 2 30 0
+	#   *p = '\0';
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 39 0
+	#     v /= 16;
+	mov A, 10
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 97
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	.L116:
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 25 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 2 40 0
+	#   } while (v);
+	.loc 2 25 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 40 0
+	#   } while (v);
+	mov A, 16
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L117
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_div
+	.L117:
+	mov A, B
+	add SP, 2
+	mov B, BP
+	add B, 2
+	store A, B
+	.loc 2 25 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	jeq .L118, A, 0
+	.loc 2 40 0
+	#   } while (v);
+	jmp .L35
+	.L118:
+	.L36:
+	.loc 2 42 0
+	#     *--p = '-';
+	.loc 2 29 0
+	#   int c;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	jeq .L119, A, 0
+	.loc 2 42 0
+	#     *--p = '-';
+	mov A, 45
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 2 25 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	sub A, 1
+	mov B, BP
+	add B, 3
+	store A, B
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.L119:
+	.loc 2 44 0
+	# }
+	.loc 2 25 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+isspace:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.file 3 "/Users/nullpo/dev/elvm/libc/ctype.h"
+	.loc 3 5 0
+	#           c == '\t' || c == '\v' || c == ' ');
+	.loc 2 44 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 5 0
+	#           c == '\t' || c == '\v' || c == ' ');
+	mov A, 12
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, 1
+	jne .L124, A, 0
+	.loc 2 44 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 5 0
+	#           c == '\t' || c == '\v' || c == ' ');
+	mov A, 10
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, A
+	ne B, 0
+	.L124:
+	mov A, B
+	mov B, 1
+	jne .L123, A, 0
+	.loc 2 44 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 5 0
+	#           c == '\t' || c == '\v' || c == ' ');
+	mov A, 13
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, A
+	ne B, 0
+	.L123:
+	mov A, B
+	mov B, 1
+	jne .L122, A, 0
+	.loc 2 44 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 5 0
+	#           c == '\t' || c == '\v' || c == ' ');
+	mov A, 9
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, A
+	ne B, 0
+	.L122:
+	mov A, B
+	mov B, 1
+	jne .L121, A, 0
+	.loc 2 44 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 5 0
+	#           c == '\t' || c == '\v' || c == ' ');
+	mov A, 11
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, A
+	ne B, 0
+	.L121:
+	mov A, B
+	mov B, 1
+	jne .L120, A, 0
+	.loc 2 44 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 5 0
+	#           c == '\t' || c == '\v' || c == ' ');
+	mov A, 32
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, A
+	ne B, 0
+	.L120:
+	mov A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+isdigit:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 3 10 0
+	# }
+	mov A, 48
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 5 0
+	#           c == '\t' || c == '\v' || c == ' ');
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, 0
+	jeq .L125, A, 0
+	.loc 3 10 0
+	# }
+	.loc 3 5 0
+	#           c == '\t' || c == '\v' || c == ' ');
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 10 0
+	# }
+	mov A, 57
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, A
+	ne B, 0
+	.L125:
+	mov A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+isxdigit:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 3 14 0
+	# }
+	.loc 3 10 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L128
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp isdigit
+	.L128:
+	mov A, B
+	add SP, 1
+	mov B, 1
+	jne .L127, A, 0
+	.loc 3 14 0
+	# }
+	mov A, 97
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 10 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, 0
+	jeq .L129, A, 0
+	.loc 3 14 0
+	# }
+	.loc 3 10 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 14 0
+	# }
+	mov A, 102
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, A
+	ne B, 0
+	.L129:
+	mov A, B
+	mov B, A
+	ne B, 0
+	.L127:
+	mov A, B
+	mov B, 1
+	jne .L126, A, 0
+	mov A, 65
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 10 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, 0
+	jeq .L130, A, 0
+	.loc 3 14 0
+	# }
+	.loc 3 10 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 14 0
+	# }
+	mov A, 70
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, A
+	ne B, 0
+	.L130:
+	mov A, B
+	mov B, A
+	ne B, 0
+	.L126:
+	mov A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+isupper:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 3 18 0
+	# }
+	mov A, 65
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 14 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, 0
+	jeq .L131, A, 0
+	.loc 3 18 0
+	# }
+	.loc 3 14 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 18 0
+	# }
+	mov A, 90
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, A
+	ne B, 0
+	.L131:
+	mov A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+isalpha:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 3 22 0
+	# }
+	mov A, 97
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 18 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, 0
+	jeq .L133, A, 0
+	.loc 3 22 0
+	# }
+	.loc 3 18 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 22 0
+	# }
+	mov A, 122
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, A
+	ne B, 0
+	.L133:
+	mov A, B
+	mov B, 1
+	jne .L132, A, 0
+	mov A, 65
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 18 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, 0
+	jeq .L134, A, 0
+	.loc 3 22 0
+	# }
+	.loc 3 18 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 22 0
+	# }
+	mov A, 90
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, A
+	ne B, 0
+	.L134:
+	mov A, B
+	mov B, A
+	ne B, 0
+	.L132:
+	mov A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+isalnum:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 3 26 0
+	# }
+	.loc 3 22 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L136
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp isalpha
+	.L136:
+	mov A, B
+	add SP, 1
+	mov B, 1
+	jne .L135, A, 0
+	.loc 3 26 0
+	# }
+	.loc 3 22 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L137
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp isdigit
+	.L137:
+	mov A, B
+	add SP, 1
+	mov B, A
+	ne B, 0
+	.L135:
+	mov A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+isprint:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 3 30 0
+	# }
+	.loc 3 26 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L139
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp isspace
+	.L139:
+	mov A, B
+	add SP, 1
+	mov B, 1
+	jne .L138, A, 0
+	.loc 3 30 0
+	# }
+	mov A, 32
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 26 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, 0
+	jeq .L140, A, 0
+	.loc 3 30 0
+	# }
+	.loc 3 26 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 3 30 0
+	# }
+	mov A, 127
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	mov B, A
+	ne B, 0
+	.L140:
+	mov A, B
+	mov B, A
+	ne B, 0
+	.L138:
+	mov A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+abort:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.file 4 "/Users/nullpo/dev/elvm/libc/stdlib.h"
+	.loc 4 21 0
+	# }
+	mov A, 1
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	exit
+	add SP, 1
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+malloc:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 1
+	.loc 4 31 0
+	# }
+	.loc 4 25 0
+	#   _edata += n;
+	mov A, 0
+	mov B, SP
+	.loc 3 30 0
+	# }
+	mov B, _edata
+	load A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.loc 4 26 0
+	#   if (r > _edata) {
+	.loc 3 30 0
+	# }
+	mov B, _edata
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 21 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, _edata
+	store A, B
+	.loc 4 29 0
+	#   }
+	.loc 4 27 0
+	#     print_str("no memory!\n");
+	.loc 3 30 0
+	# }
+	mov B, _edata
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 25 0
+	#   _edata += n;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L141, A, 0
+	.loc 4 29 0
+	#   }
+	.loc 4 28 0
+	#     exit(1);
+.data
+	.L142:
+	.string "no memory!\n"
+.text
+	mov A, .L142
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L143
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp print_str
+	.L143:
+	mov A, B
+	add SP, 1
+	.loc 4 29 0
+	#   }
+	mov A, 1
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	exit
+	add SP, 1
+	.L141:
+	.loc 4 31 0
+	# }
+	.loc 4 25 0
+	#   _edata += n;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+calloc:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 4 35 0
+	# }
+	.loc 4 31 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 3
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L144
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_mul
+	.L144:
+	mov A, B
+	add SP, 2
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L145
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp malloc
+	.L145:
+	mov A, B
+	add SP, 1
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+free:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 4 35 0
+	# }
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+strtol:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 7
+	.loc 4 116 0
+	# }
+	.loc 4 45 0
+	#   long acc, cutoff;
+	.loc 4 46 0
+	#   int c;
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	.loc 4 48 0
+	# 
+	.loc 4 57 0
+	#   }
+	.loc 4 54 0
+	#     if (endptr != 0)
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 54 0
+	#     if (endptr != 0)
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	mov B, 1
+	jne .L147, A, 0
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 54 0
+	#     if (endptr != 0)
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, A
+	ne B, 0
+	.L147:
+	mov A, B
+	mov B, 1
+	jne .L146, A, 0
+	mov A, 36
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	mov B, A
+	ne B, 0
+	.L146:
+	mov A, B
+	jeq .L148, A, 0
+	.loc 4 57 0
+	#   }
+	.loc 4 55 0
+	#       *endptr = (char *)nptr;
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 55 0
+	#       *endptr = (char *)nptr;
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	ne A, B
+	jeq .L149, A, 0
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 3
+	load A, B
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.L149:
+	.loc 4 57 0
+	#   }
+	mov A, 0
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.L148:
+	.loc 4 65 0
+	#   do {
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.loc 4 67 0
+	#   } while (isspace(c));
+	.L37:
+	.loc 4 45 0
+	#   long acc, cutoff;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777215
+	store A, B
+	load A, SP
+	add SP, 1
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 4 67 0
+	#   } while (isspace(c));
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L150
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp isspace
+	.L150:
+	mov A, B
+	add SP, 1
+	jeq .L151, A, 0
+	.loc 4 67 0
+	#   } while (isspace(c));
+	jmp .L37
+	.L151:
+	.L38:
+	.loc 4 74 0
+	#       c = *s++;
+	.loc 4 69 0
+	#     neg = 1;
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 69 0
+	#     neg = 1;
+	mov A, 45
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	jeq .L152, A, 0
+	.loc 4 71 0
+	#   } else {
+	.loc 4 70 0
+	#     c = *s++;
+	mov A, 1
+	mov B, BP
+	add B, 16777211
+	store A, B
+	.loc 4 71 0
+	#   } else {
+	.loc 4 45 0
+	#   long acc, cutoff;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777215
+	store A, B
+	load A, SP
+	add SP, 1
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777212
+	store A, B
+	jmp .L153
+	.L152:
+	.loc 4 74 0
+	#       c = *s++;
+	.loc 4 73 0
+	#     if (c == '+')
+	mov A, 0
+	mov B, BP
+	add B, 16777211
+	store A, B
+	.loc 4 74 0
+	#       c = *s++;
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 74 0
+	#       c = *s++;
+	mov A, 43
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	jeq .L154, A, 0
+	.loc 4 45 0
+	#   long acc, cutoff;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777215
+	store A, B
+	load A, SP
+	add SP, 1
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.L154:
+	.L153:
+	.loc 4 81 0
+	#   }
+	.loc 4 77 0
+	#       c == '0' && (*s == 'x' || *s == 'X')) {
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 77 0
+	#       c == '0' && (*s == 'x' || *s == 'X')) {
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, 1
+	jne .L157, A, 0
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 77 0
+	#       c == '0' && (*s == 'x' || *s == 'X')) {
+	mov A, 16
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, A
+	ne B, 0
+	.L157:
+	mov A, B
+	mov B, 0
+	jeq .L156, A, 0
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 77 0
+	#       c == '0' && (*s == 'x' || *s == 'X')) {
+	mov A, 48
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, A
+	ne B, 0
+	.L156:
+	mov A, B
+	mov B, 0
+	jeq .L155, A, 0
+	.loc 4 45 0
+	#   long acc, cutoff;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 77 0
+	#       c == '0' && (*s == 'x' || *s == 'X')) {
+	mov A, 120
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, 1
+	jne .L158, A, 0
+	.loc 4 45 0
+	#   long acc, cutoff;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 77 0
+	#       c == '0' && (*s == 'x' || *s == 'X')) {
+	mov A, 88
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	mov B, A
+	ne B, 0
+	.L158:
+	mov A, B
+	mov B, A
+	ne B, 0
+	.L155:
+	mov A, B
+	jeq .L159, A, 0
+	.loc 4 81 0
+	#   }
+	.loc 4 79 0
+	#     s += 2;
+	.loc 4 45 0
+	#   long acc, cutoff;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 79 0
+	#     s += 2;
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 4 80 0
+	#     base = 16;
+	.loc 4 45 0
+	#   long acc, cutoff;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 80 0
+	#     base = 16;
+	mov A, 2
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.loc 4 81 0
+	#   }
+	mov A, 16
+	mov B, BP
+	add B, 4
+	store A, B
+	.L159:
+	.loc 4 83 0
+	#     base = c == '0' ? 8 : 10;
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 83 0
+	#     base = c == '0' ? 8 : 10;
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	jeq .L160, A, 0
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 83 0
+	#     base = c == '0' ? 8 : 10;
+	mov A, 48
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	jeq .L161, A, 0
+	mov A, 8
+	jmp .L162
+	.L161:
+	mov A, 10
+	.L162:
+	mov B, BP
+	add B, 4
+	store A, B
+	.L160:
+	.loc 4 91 0
+	#   }
+	.loc 4 48 0
+	# 
+	mov B, BP
+	add B, 16777211
+	load A, B
+	jeq .L163, A, 0
+	.loc 4 91 0
+	#   }
+	.loc 4 89 0
+	#     }
+	.loc 4 87 0
+	#       cutlim -= base;
+	mov A, 0
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 48 0
+	# 
+	mov B, BP
+	add B, 16777209
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L164, A, 0
+	.loc 4 89 0
+	#     }
+	.loc 4 88 0
+	#       cutoff += 1;
+	.loc 4 48 0
+	# 
+	mov B, BP
+	add B, 16777209
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 16777209
+	store A, B
+	.loc 4 89 0
+	#     }
+	.loc 4 46 0
+	#   int c;
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 89 0
+	#     }
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.L164:
+	.loc 4 91 0
+	#   }
+	mov A, 0
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 48 0
+	# 
+	mov B, BP
+	add B, 16777209
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 16777209
+	store A, B
+	.L163:
+	.loc 4 111 0
+	#     }
+	.loc 4 93 0
+	#     if (isdigit(c))
+	mov A, 0
+	mov B, BP
+	add B, 16777214
+	store A, B
+	mov A, 0
+	mov B, BP
+	add B, 16777210
+	store A, B
+	.loc 4 111 0
+	#     }
+	.L39:
+	.loc 4 94 0
+	#       c -= '0';
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L165
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp isdigit
+	.L165:
+	mov A, B
+	add SP, 1
+	jeq .L166, A, 0
+	.loc 4 94 0
+	#       c -= '0';
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 94 0
+	#       c -= '0';
+	mov A, 48
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 16777212
+	store A, B
+	jmp .L167
+	.L166:
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L168
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp isalpha
+	.L168:
+	mov A, B
+	add SP, 1
+	jeq .L169, A, 0
+	.loc 4 94 0
+	#       c -= '0';
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 94 0
+	#       c -= '0';
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L170
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp isupper
+	.L170:
+	mov A, B
+	add SP, 1
+	jeq .L171, A, 0
+	.loc 4 94 0
+	#       c -= '0';
+	mov A, 65
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 10
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	jmp .L172
+	.L171:
+	mov A, 97
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 10
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	.L172:
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 16777212
+	store A, B
+	jmp .L173
+	.L169:
+	jmp .L41
+	.L173:
+	.L167:
+	.loc 4 100 0
+	#       break;
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L174, A, 0
+	.loc 4 100 0
+	#       break;
+	jmp .L41
+	.L174:
+	.loc 4 102 0
+	#       continue;
+	.loc 4 48 0
+	# 
+	mov B, BP
+	add B, 16777210
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 102 0
+	#       continue;
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L175, A, 0
+	jmp .L40
+	.L175:
+	.loc 4 111 0
+	#     }
+	.loc 4 48 0
+	# 
+	mov B, BP
+	add B, 16777211
+	load A, B
+	jeq .L176, A, 0
+	.loc 4 107 0
+	#     } else {
+	.loc 4 105 0
+	#       acc *= base;
+	mov A, 1
+	mov B, BP
+	add B, 16777210
+	store A, B
+	.loc 4 106 0
+	#       acc -= c;
+	.loc 4 46 0
+	#   int c;
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 106 0
+	#       acc -= c;
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L177
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_mul
+	.L177:
+	mov A, B
+	add SP, 2
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.loc 4 107 0
+	#     } else {
+	.loc 4 46 0
+	#   int c;
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 107 0
+	#     } else {
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, BP
+	add B, 16777214
+	store A, B
+	jmp .L178
+	.L176:
+	.loc 4 111 0
+	#     }
+	.loc 4 109 0
+	#       acc *= base;
+	mov A, 1
+	mov B, BP
+	add B, 16777210
+	store A, B
+	.loc 4 110 0
+	#       acc += c;
+	.loc 4 46 0
+	#   int c;
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 110 0
+	#       acc += c;
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L179
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_mul
+	.L179:
+	mov A, B
+	add SP, 2
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.loc 4 111 0
+	#     }
+	.loc 4 46 0
+	#   int c;
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 111 0
+	#     }
+	.loc 4 47 0
+	#   int neg, any, cutlim;
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.L178:
+	.loc 4 111 0
+	#     }
+	.L40:
+	.loc 4 93 0
+	#     if (isdigit(c))
+	.loc 4 45 0
+	#   long acc, cutoff;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777215
+	store A, B
+	load A, SP
+	add SP, 1
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 4 111 0
+	#     }
+	jmp .L39
+	.L41:
+	.loc 4 114 0
+	#     *endptr = (char *) (any ? s - 1 : nptr);
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 114 0
+	#     *endptr = (char *) (any ? s - 1 : nptr);
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	ne A, B
+	jeq .L180, A, 0
+	.loc 4 48 0
+	# 
+	mov B, BP
+	add B, 16777210
+	load A, B
+	jeq .L181, A, 0
+	.loc 4 114 0
+	#     *endptr = (char *) (any ? s - 1 : nptr);
+	.loc 4 45 0
+	#   long acc, cutoff;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 114 0
+	#     *endptr = (char *) (any ? s - 1 : nptr);
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	jmp .L182
+	.L181:
+	.loc 4 35 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	.L182:
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 3
+	load A, B
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.L180:
+	.loc 4 116 0
+	# }
+	.loc 4 46 0
+	#   int c;
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+strtoul:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 4 120 0
+	# }
+	.loc 4 116 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L183
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp strtol
+	.L183:
+	mov A, B
+	add SP, 3
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+strtoll:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 4 124 0
+	# }
+	.loc 4 120 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L184
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp strtol
+	.L184:
+	mov A, B
+	add SP, 3
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+strtoull:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 4 128 0
+	# }
+	.loc 4 124 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L185
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp strtol
+	.L185:
+	mov A, B
+	add SP, 3
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+atoi:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 2
+	.loc 4 138 0
+	# }
+	.loc 4 132 0
+	#   unsigned long i = 0;
+	mov A, 0
+	mov B, SP
+	mov B, BP
+	add B, 16777215
+	mov A, 0
+	store A, B
+	.loc 4 133 0
+	#   while (s[i] >= '0' && s[i] <= '9') {
+	mov A, 0
+	mov B, SP
+	mov A, 0
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.loc 4 136 0
+	#   }
+	.L42:
+	.loc 4 134 0
+	#     n = (n << 3) + (n << 1);
+	mov A, 48
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 128 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 133 0
+	#   while (s[i] >= '0' && s[i] <= '9') {
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, 0
+	jeq .L186, A, 0
+	.loc 4 134 0
+	#     n = (n << 3) + (n << 1);
+	.loc 4 128 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 133 0
+	#   while (s[i] >= '0' && s[i] <= '9') {
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 134 0
+	#     n = (n << 3) + (n << 1);
+	mov A, 57
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	mov B, A
+	ne B, 0
+	.L186:
+	mov A, B
+	jeq .L187, A, 0
+	.loc 4 136 0
+	#   }
+	.loc 4 135 0
+	#     n += s[i++] - '0';
+	.loc 4 132 0
+	#   unsigned long i = 0;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 135 0
+	#     n += s[i++] - '0';
+	mov A, 3
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L188
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_shl
+	.L188:
+	mov A, B
+	add SP, 2
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 132 0
+	#   unsigned long i = 0;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 135 0
+	#     n += s[i++] - '0';
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L189
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_shl
+	.L189:
+	mov A, B
+	add SP, 2
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.loc 4 136 0
+	#   }
+	.loc 4 132 0
+	#   unsigned long i = 0;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 136 0
+	#   }
+	.loc 4 128 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 136 0
+	#   }
+	.loc 4 133 0
+	#   while (s[i] >= '0' && s[i] <= '9') {
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777214
+	store A, B
+	load A, SP
+	add SP, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 136 0
+	#   }
+	mov A, 48
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	jmp .L190
+	.L187:
+	jmp .L43
+	.L190:
+	jmp .L42
+	.L43:
+	.loc 4 138 0
+	# }
+	.loc 4 132 0
+	#   unsigned long i = 0;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+getenv:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	.loc 4 142 0
+	# }
+	mov A, 0
+	mov B, A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+qsort:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 6
+	.loc 4 184 0
+	#         size, compar);
+	.loc 4 147 0
+	#     return;
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 147 0
+	#     return;
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L191, A, 0
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.L191:
+	.loc 4 149 0
+	#   char* pivot = base + (nmemb / 2) * size;
+	mov A, 0
+	mov B, SP
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 2
+	load A, B
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.loc 4 150 0
+	#   char* left = base;
+	mov A, 0
+	mov B, SP
+	.loc 4 149 0
+	#   char* pivot = base + (nmemb / 2) * size;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 150 0
+	#   char* left = base;
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 150 0
+	#   char* left = base;
+	mov A, 2
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L192
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_div
+	.L192:
+	mov A, B
+	add SP, 2
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L193
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_mul
+	.L193:
+	mov A, B
+	add SP, 2
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.loc 4 151 0
+	#   char* right = base + (nmemb - 1) * size;
+	mov A, 0
+	mov B, SP
+	.loc 4 149 0
+	#   char* pivot = base + (nmemb / 2) * size;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.loc 4 152 0
+	# #if 0
+	mov A, 0
+	mov B, SP
+	.loc 4 149 0
+	#   char* pivot = base + (nmemb / 2) * size;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 152 0
+	# #if 0
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 152 0
+	# #if 0
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L194
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_mul
+	.L194:
+	mov A, B
+	add SP, 2
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 4 179 0
+	#   }
+	.L44:
+	.loc 4 162 0
+	#       left += size;
+	.L47:
+	mov A, 32768
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 150 0
+	#   char* left = base;
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 151 0
+	#   char* right = base + (nmemb - 1) * size;
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 5
+	load A, B
+	mov C, A
+	mov A, .L195
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp C
+	.L195:
+	mov A, B
+	add SP, 2
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L196, A, 0
+	.loc 4 162 0
+	#       left += size;
+	.loc 4 151 0
+	#   char* right = base + (nmemb - 1) * size;
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, BP
+	add B, 16777213
+	store A, B
+	jmp .L197
+	.L196:
+	.loc 4 162 0
+	#       left += size;
+	jmp .L48
+	.L197:
+	jmp .L47
+	.L48:
+	.loc 4 164 0
+	#       right -= size;
+	.L49:
+	.loc 4 150 0
+	#   char* left = base;
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 152 0
+	# #if 0
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 5
+	load A, B
+	mov C, A
+	mov A, .L198
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp C
+	.L198:
+	mov A, B
+	add SP, 2
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 164 0
+	#       right -= size;
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 32768
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L199, A, 0
+	.loc 4 152 0
+	# #if 0
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, BP
+	add B, 16777212
+	store A, B
+	jmp .L200
+	.L199:
+	.loc 4 164 0
+	#       right -= size;
+	jmp .L50
+	.L200:
+	jmp .L49
+	.L50:
+	.loc 4 167 0
+	#       break;
+	.loc 4 152 0
+	# #if 0
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 151 0
+	#   char* right = base + (nmemb - 1) * size;
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	le A, B
+	jeq .L201, A, 0
+	.loc 4 167 0
+	#       break;
+	jmp .L46
+	.L201:
+	.loc 4 172 0
+	#     }
+	.loc 4 169 0
+	#       char tmp = left[i];
+	mov A, 0
+	mov B, SP
+	mov A, 0
+	mov B, BP
+	add B, 16777211
+	store A, B
+	.loc 4 172 0
+	#     }
+	.L51:
+	.loc 4 169 0
+	#       char tmp = left[i];
+	mov B, BP
+	add B, 16777211
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	lt A, B
+	jeq .L202, A, 0
+	jmp .L203
+	.L202:
+	.loc 4 172 0
+	#     }
+	jmp .L53
+	.L203:
+	.loc 4 170 0
+	#       left[i] = right[i];
+	mov A, 0
+	mov B, SP
+	.loc 4 151 0
+	#   char* right = base + (nmemb - 1) * size;
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 169 0
+	#       char tmp = left[i];
+	mov B, BP
+	add B, 16777211
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov B, BP
+	add B, 16777210
+	store A, B
+	.loc 4 171 0
+	#       right[i] = tmp;
+	.loc 4 152 0
+	# #if 0
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 169 0
+	#       char tmp = left[i];
+	mov B, BP
+	add B, 16777211
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, A
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 171 0
+	#       right[i] = tmp;
+	.loc 4 151 0
+	#   char* right = base + (nmemb - 1) * size;
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 169 0
+	#       char tmp = left[i];
+	mov B, BP
+	add B, 16777211
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 4 172 0
+	#     }
+	.loc 4 170 0
+	#       left[i] = right[i];
+	mov B, BP
+	add B, 16777210
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 172 0
+	#     }
+	.loc 4 152 0
+	# #if 0
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 169 0
+	#       char tmp = left[i];
+	mov B, BP
+	add B, 16777211
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 4 172 0
+	#     }
+	.L52:
+	.loc 4 169 0
+	#       char tmp = left[i];
+	mov B, BP
+	add B, 16777211
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	add A, 1
+	mov B, BP
+	add B, 16777211
+	store A, B
+	load A, SP
+	add SP, 1
+	.loc 4 172 0
+	#     }
+	jmp .L51
+	.L53:
+	.loc 4 174 0
+	#       pivot = right;
+	.loc 4 150 0
+	#   char* left = base;
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 151 0
+	#   char* right = base + (nmemb - 1) * size;
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	jeq .L204, A, 0
+	.loc 4 174 0
+	#       pivot = right;
+	.loc 4 152 0
+	# #if 0
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov B, BP
+	add B, 16777214
+	store A, B
+	jmp .L205
+	.L204:
+	.loc 4 174 0
+	#       pivot = right;
+	.loc 4 150 0
+	#   char* left = base;
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 152 0
+	# #if 0
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	eq A, B
+	jeq .L206, A, 0
+	.loc 4 174 0
+	#       pivot = right;
+	.loc 4 151 0
+	#   char* right = base + (nmemb - 1) * size;
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.L206:
+	.L205:
+	.loc 4 178 0
+	#     right -= size;
+	.loc 4 151 0
+	#   char* right = base + (nmemb - 1) * size;
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, BP
+	add B, 16777213
+	store A, B
+	.loc 4 179 0
+	#   }
+	.loc 4 152 0
+	# #if 0
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 4 179 0
+	#   }
+	.L45:
+	jmp .L44
+	.L46:
+	.loc 4 182 0
+	#   qsort(base, (size_t)(left - base) / size, size, compar);
+	.loc 4 152 0
+	# #if 0
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov B, BP
+	add B, 16777212
+	store A, B
+	.loc 4 183 0
+	#   qsort(right, (size_t)(base + nmemb * size - right) / size,
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 5
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 4
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 183 0
+	#   qsort(right, (size_t)(base + nmemb * size - right) / size,
+	.loc 4 151 0
+	#   char* right = base + (nmemb - 1) * size;
+	mov B, BP
+	add B, 16777213
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 149 0
+	#   char* pivot = base + (nmemb / 2) * size;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L207
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_div
+	.L207:
+	mov A, B
+	add SP, 2
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 149 0
+	#   char* pivot = base + (nmemb / 2) * size;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L208
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp qsort
+	.L208:
+	mov A, B
+	add SP, 4
+	.loc 4 184 0
+	#         size, compar);
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 5
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 4
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 184 0
+	#         size, compar);
+	.loc 4 149 0
+	#   char* pivot = base + (nmemb / 2) * size;
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 184 0
+	#         size, compar);
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 3
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L209
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_mul
+	.L209:
+	mov A, B
+	add SP, 2
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 152 0
+	# #if 0
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	sub A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 142 0
+	# }
+	mov B, BP
+	add B, 4
+	load A, B
+	mov B, A
+	load A, SP
+	add SP, 1
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L210
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp __builtin_div
+	.L210:
+	mov A, B
+	add SP, 2
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 4 152 0
+	# #if 0
+	mov B, BP
+	add B, 16777212
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L211
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp qsort
+	.L211:
+	mov A, B
+	add SP, 4
+	mov SP, BP
+	load A, SP
+	add SP, 1
+	mov BP, A
+	load A, SP
+	add SP, 1
+	jmp A
+	.text
+main:
+	mov D, SP
+	add D, -1
+	store BP, D
+	mov SP, D
+	mov BP, SP
+	sub SP, 2
+	.file 5 "out/malloc.c"
+	.loc 5 23 0
+	# }
+	.loc 5 5 0
+	#   char* buf2 = calloc(6, 1);
+	mov A, 0
+	mov B, SP
+	mov A, 1
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 6
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L212
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp calloc
+	.L212:
+	mov A, B
+	add SP, 2
+	mov B, BP
+	add B, 16777215
+	store A, B
+	.loc 5 6 0
+	#   buf[0] = 'h';
+	mov A, 0
+	mov B, SP
+	mov A, 1
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, 6
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L213
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp calloc
+	.L213:
+	mov A, B
+	add SP, 2
+	mov B, BP
+	add B, 16777214
+	store A, B
+	.loc 5 7 0
+	#   buf[1] = 'e';
+	mov A, 104
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 5 0
+	#   char* buf2 = calloc(6, 1);
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 7 0
+	#   buf[1] = 'e';
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 8 0
+	#   buf[2] = 'l';
+	mov A, 101
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 5 0
+	#   char* buf2 = calloc(6, 1);
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 8 0
+	#   buf[2] = 'l';
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 9 0
+	#   buf[3] = 'l';
+	mov A, 108
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 5 0
+	#   char* buf2 = calloc(6, 1);
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 9 0
+	#   buf[3] = 'l';
+	mov A, 2
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 10 0
+	#   buf[4] = 'o';
+	mov A, 108
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 5 0
+	#   char* buf2 = calloc(6, 1);
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 10 0
+	#   buf[4] = 'o';
+	mov A, 3
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 11 0
+	#   buf[5] = 0;
+	mov A, 111
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 5 0
+	#   char* buf2 = calloc(6, 1);
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 11 0
+	#   buf[5] = 0;
+	mov A, 4
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 12 0
+	#   buf2[0] = 'w';
+	mov A, 0
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 5 0
+	#   char* buf2 = calloc(6, 1);
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 12 0
+	#   buf2[0] = 'w';
+	mov A, 5
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 13 0
+	#   buf2[1] = 'o';
+	mov A, 119
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 6 0
+	#   buf[0] = 'h';
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 13 0
+	#   buf2[1] = 'o';
+	mov A, 0
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 14 0
+	#   buf2[2] = 'r';
+	mov A, 111
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 6 0
+	#   buf[0] = 'h';
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 14 0
+	#   buf2[2] = 'r';
+	mov A, 1
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 15 0
+	#   buf2[3] = 'l';
+	mov A, 114
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 6 0
+	#   buf[0] = 'h';
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 15 0
+	#   buf2[3] = 'l';
+	mov A, 2
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 16 0
+	#   buf2[4] = 'd';
+	mov A, 108
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 6 0
+	#   buf[0] = 'h';
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 16 0
+	#   buf2[4] = 'd';
+	mov A, 3
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 17 0
+	#   buf2[5] = 0;
+	mov A, 100
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 6 0
+	#   buf[0] = 'h';
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 17 0
+	#   buf2[5] = 0;
+	mov A, 4
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 18 0
+	#   print_str(buf);
+	mov A, 0
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 6 0
+	#   buf[0] = 'h';
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store B, D
+	mov SP, D
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	.loc 5 18 0
+	#   print_str(buf);
+	mov A, 5
+	mov B, A
+	load A, SP
+	add SP, 1
+	add A, B
+	mov C, A
+	load A, SP
+	add SP, 1
+	mov B, A
+	mov A, C
+	mov C, A
+	load A, SP
+	mov B, A
+	mov A, C
+	store B, A
+	load A, SP
+	add SP, 1
+	.loc 5 19 0
+	#   print_str(buf2);
+	.loc 5 5 0
+	#   char* buf2 = calloc(6, 1);
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L214
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp print_str
+	.L214:
+	mov A, B
+	add SP, 1
+	.loc 5 20 0
+	#   free(buf);
+	.loc 5 6 0
+	#   buf[0] = 'h';
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L215
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp print_str
+	.L215:
+	mov A, B
+	add SP, 1
+	.loc 5 21 0
+	#   free(buf2);
+	.loc 5 5 0
+	#   char* buf2 = calloc(6, 1);
+	mov B, BP
+	add B, 16777215
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L216
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp free
+	.L216:
+	mov A, B
+	add SP, 1
+	.loc 5 22 0
+	#   return 0;
+	.loc 5 6 0
+	#   buf[0] = 'h';
+	mov B, BP
+	add B, 16777214
+	load A, B
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	mov A, .L217
+	mov D, SP
+	add D, -1
+	store A, D
+	mov SP, D
+	jmp free
+	.L217:
+	mov A, B
+	add SP, 1
+	.loc 5 23 0
+	# }
+	mov A, 0
+	mov B, A
+	exit
+	exit

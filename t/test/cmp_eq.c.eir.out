@@ -1,0 +1,9 @@
+=== test/cmp_eq_1.in ===
+Y
+
+=== test/cmp_eq_2.in ===
+Y
+
+=== test/cmp_eq_3.in ===
+X
+

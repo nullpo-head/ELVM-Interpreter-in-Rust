@@ -482,7 +482,12 @@ fn interpret(eir: &str, verbose: bool) {
   let mut label_map = HashMap::new();
   let text_mem = encode_to_text_mem(text, &mut label_map);
   let data_mem = encode_to_data_mem(data, &mut label_map);
-  eval(label_map["main"], text_mem, data_mem, label_map, verbose);
+
+  let start = match label_map.get("main") {
+    Some(main) => *main,
+    None => 0,
+  };
+  eval(start, text_mem, data_mem, label_map, verbose);
 }
 
 fn main() {
