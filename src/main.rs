@@ -440,11 +440,13 @@ fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u32>, label_map: HashMap
             let addr = (src(&operands[1], &env) & WORD_MASK) as usize;
             env.data[addr] = src(&operands[0], &env);
           },
-          Putc => {io::stdout().write(&[src(&operands[0], &env) as u8]).expect("write error");},
+          Putc => {
+            io::stdout().write(&[src(&operands[0], &env) as u8]).expect("write error");
+          },
           Getc => {
             let mut buf = [0; 1];
-            let c = io::stdin().read(&mut buf).expect("read error");
-            *dst(&operands[0], &mut env) = c as u32 & WORD_MASK;
+            io::stdin().read(&mut buf).expect("read error");
+            *dst(&operands[0], &mut env) = buf[0] as u32;
           },
           Eq | Ne | Lt | Gt | Le | Ge => {
             let d = *dst(&operands[0], &mut env) & WORD_MASK;

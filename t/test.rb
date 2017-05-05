@@ -12,7 +12,7 @@ class TestInterpreter < Test::Unit::TestCase
         test_result = ""
         inputs.each do |input|
           test_result << "=== test/#{File.basename(input)} ===\n" 
-          test_result << `#{BIN} #{filename} < #{input}`
+          test_result << `#{BIN} #{filename} < #{input}` + "\n"
         end
       else
         test_result = `#{BIN} #{filename}`
