@@ -421,8 +421,8 @@ fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u32>, label_map: HashMap
         use Opcode::*;
         match *opcode {
           Mov => *dst(&operands[0], &mut env) = src(&operands[1], &env),
-          Add => *dst(&operands[0], &mut env) = dst(&operands[0], &mut env).wrapping_add(src(&operands[1], &env)),
-          Sub => *dst(&operands[0], &mut env) = dst(&operands[0], &mut env).wrapping_sub(src(&operands[1], &env)),
+          Add => *dst(&operands[0], &mut env) = dst(&operands[0], &mut env).wrapping_add(src(&operands[1], &env)) & WORD_MASK,
+          Sub => *dst(&operands[0], &mut env) = dst(&operands[0], &mut env).wrapping_sub(src(&operands[1], &env)) & WORD_MASK,
           Load => *dst(&operands[0], &mut env) = env.data[(src(&operands[1], &env) & WORD_MASK) as usize],
           Store => {
             let addr = (src(&operands[1], &env) & WORD_MASK) as usize;
@@ -432,11 +432,11 @@ fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u32>, label_map: HashMap
           Getc => {
             let mut buf = [0; 1];
             let c = io::stdin().read(&mut buf).expect("read error");
-            *dst(&operands[0], &mut env) = c as u32;
+            *dst(&operands[0], &mut env) = c as u32 & WORD_MASK;
           },
           Eq | Ne | Lt | Gt | Le | Ge => {
-            let d= *dst(&operands[0], &mut env) & WORD_MASK;
-            let s= src(&operands[1], &env) & WORD_MASK;
+            let d = *dst(&operands[0], &mut env) & WORD_MASK;
+            let s = src(&operands[1], &env) & WORD_MASK;
             *dst(&operands[0], &mut env) = if compare(opcode, d, s) {1} else {0};
           },
           Jeq | Jne | Jlt | Jgt | Jle | Jge => {
