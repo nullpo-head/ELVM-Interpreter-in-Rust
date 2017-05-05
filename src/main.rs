@@ -298,6 +298,7 @@ fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
               expect_len(&operands, 1, &opcode, &pos);
               if let Operand::ImmS(mut operand) = operands.remove(0) {
                 result.append(&mut operand);
+                result.push(0);
               } else {
                 panic!("Invalid operand for .string, line: {}, column: {}", pos.line, pos.column);
               }
