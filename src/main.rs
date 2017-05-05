@@ -388,7 +388,7 @@ fn src(src: &Operand, env: &EvalEnv) -> u32 {
   match *src {
     Operand::Reg(ref name) => env.registers[*name],
     Operand::ImmI(ref val) => *val as u32,
-    Operand::Label(ref name) => env.label_map[name] as u32,
+    Operand::Label(ref name) => *env.label_map.get(name).expect(&format!("undefined label: {}", name)) as u32,
     _ => panic!("not src"),
   }
 }
@@ -412,11 +412,18 @@ fn compare(cmp: &Opcode, dst: u32, src: u32) -> bool {
   }
 }
 
-fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u32>, label_map: HashMap<String, usize>) {
+fn dump_regs(env: &EvalEnv) {
+  println!("PC={} A={} B={} C={} D={} BP={} SP={}", env.pc, env.registers[Register::A], env.registers[Register::B], env.registers[Register::C], env.registers[Register::D], env.registers[Register::BP], env.registers[Register::SP]);
+}
+
+fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u32>, label_map: HashMap<String, usize>, verbose: bool) {
   let mut env = EvalEnv {pc: pc, data: data, label_map: label_map, ..Default::default()};
   'block: while env.pc < text.len() {
     let block = &text[env.pc];
-    'op: for statement in block {
+    for statement in block {
+      if verbose {
+        dump_regs(&env);
+      }
       if let Statement::Instruction(ref opcode, ref operands)  = *statement {
         use Opcode::*;
         match *opcode {
@@ -452,7 +459,7 @@ fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u32>, label_map: HashMap
             env.pc = (src(&operands[0], &env) & WORD_MASK) as usize;
             continue 'block;
           },
-          Exit => break 'block,
+          Exit => std::process::exit(0),
           Dump => println!("{:?}", env),
           PseudoOp(_) => unreachable!(),
         }
@@ -470,7 +477,7 @@ fn interpret(eir: &str) {
   let mut label_map = HashMap::new();
   let text_mem = encode_to_text_mem(text, &mut label_map);
   let data_mem = encode_to_data_mem(data, &mut label_map);
-  eval(label_map["main"], text_mem, data_mem, label_map);
+  eval(label_map["main"], text_mem, data_mem, label_map, true);
 }
 
 fn main() {
