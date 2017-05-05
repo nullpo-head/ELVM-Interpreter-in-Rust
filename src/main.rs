@@ -284,10 +284,14 @@ fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
           match pseudo_op.as_str() {
             ".long" => {
               expect_len(&operands, 1, &opcode, &pos);
-              if let Operand::ImmI(operand) = operands[0] {
-                result.push(operand as u32);
-              } else {
-                panic!("Invalid operand for .long, line: {}, column: {}", pos.line, pos.column);
+              match operands.remove(0) {
+                Operand::ImmI(operand) => {
+                  result.push(operand as u32);
+                },
+                Operand::Label(label) => {
+                  result.push(*label_map.get(&label).expect("Forward reference of labels is not implemented") as u32);
+                },
+                _ => panic!("Invalid operand for .long, line: {}, column: {}", pos.line, pos.column),
               }
             },
             ".string" => {
