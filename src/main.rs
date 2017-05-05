@@ -475,20 +475,22 @@ fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u32>, label_map: HashMap
   }
 }
 
-fn interpret(eir: &str) {
+fn interpret(eir: &str, verbose: bool) {
   let statements = parse(eir);
   let (text, data) = separate_segments(statements);
   let mut label_map = HashMap::new();
   let text_mem = encode_to_text_mem(text, &mut label_map);
   let data_mem = encode_to_data_mem(data, &mut label_map);
-  eval(label_map["main"], text_mem, data_mem, label_map, true);
+  eval(label_map["main"], text_mem, data_mem, label_map, verbose);
 }
 
 fn main() {
   let args: Vec<String> = env::args().collect();
   let mut opts = Options::new();
   opts.optflag("h", "help", "");
-  if args.len() < 2 || opts.parse(&args[1..]).unwrap().opt_present("h") {
+  opts.optflag("v", "verbose", "");
+  let parse = opts.parse(&args[1..]).expect("Option parsing failed");
+  if args.len() < 2 || parse.opt_present("h") {
     println!("Usage: {} EIR_FILE", args[0]);
     return;
   }
@@ -499,5 +501,5 @@ fn main() {
     file.read_to_string(&mut eir_str).expect("Could not read file");
   }
   
-  interpret(&eir_str);
+  interpret(&eir_str, parse.opt_present("v"));
 }
