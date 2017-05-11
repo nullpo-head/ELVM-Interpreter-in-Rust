@@ -119,7 +119,7 @@ fn uint_literal<'a, I>() -> Box<Parser<Input = I, Output = i32> + 'a>
 fn operands<I>(input: I) -> ParseResult<Vec<Operand>, I>
   where I: Stream<Item=char>
 {
-  let parse_op = symbol().map(|id| match id.as_ref() {
+  let parse_op = (symbol().map(|id| match id.as_ref() {
     "A" => Operand::Reg(Register::A),
     "B" => Operand::Reg(Register::B),
     "C" => Operand::Reg(Register::C),
@@ -129,8 +129,8 @@ fn operands<I>(input: I) -> ParseResult<Vec<Operand>, I>
     _ => Operand::Label(id)
   })
     .or(uint_literal().map(|i| Operand::ImmI(i)))
-    .or(string_literal().map(|s| Operand::ImmS(s)));
-  sep_by::<Vec<Operand>, _, _>(parse_op, optional(inline_skipable()).and(token(',')).skip(inline_skipable())).parse_stream(input)
+    .or(string_literal().map(|s| Operand::ImmS(s)))).skip(inline_skipable());
+  sep_by::<Vec<Operand>, _, _>(parse_op, token(',').skip(inline_skipable())).parse_stream(input)
 }
 
 fn opcode<I>(input: I) -> ParseResult<Opcode, I>
@@ -177,8 +177,8 @@ fn parse(src: &str) -> Vec<(Statement, SourcePosition)> {
     let pos = input.position;
     symbol().and(token(':')).map(|(id, _)| (Statement::Label(id), pos)).parse_stream(input)
   });
-  let statement = try(label).or(instruction).skip(inline_skipable()).skip(newline());
-  let mut program = many::<Vec<_>, _>(optional(skipable()).with(statement).skip(skipable())).skip(eof());
+  let statement = try(label).or(instruction).skip(skipable());
+  let mut program = many::<Vec<_>, _>(optional(skipable()).with(statement)).skip(eof());
   program.parse(State::new(src)).expect("Parse Error.").0
 }
 
@@ -243,7 +243,7 @@ fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
               expect_len(&operands, 1, &opcode, &pos);
               expect_src(&operands[0], &opcode, &pos);
             },
-            Exit => {
+            Exit | Dump => {
               expect_len(&operands, 0, &opcode, &pos);
             },
             _ => {
@@ -467,7 +467,7 @@ fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u32>, label_map: HashMap
             continue 'block;
           },
           Exit => std::process::exit(0),
-          Dump => println!("{:?}", env),
+          Dump => {/* Do Nothing */},
           PseudoOp(_) => unreachable!(),
         }
       } else {
