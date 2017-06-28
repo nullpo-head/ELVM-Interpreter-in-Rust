@@ -1,3 +1,5 @@
+#!/usr/bin/ruby
+
 require "test/unit"
 
 class TestInterpreter < Test::Unit::TestCase
