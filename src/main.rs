@@ -152,31 +152,56 @@ fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
   result
 }
 
+fn extract_subsection(statement: &Statement, pos: &SourcePosition) -> i32 {
+  match *statement {
+    Statement::Instruction(ref opcode, ref operands) => {
+      if operands.len() == 0 {
+        return 0;
+      } else {
+        expect_len(operands, 1, &opcode, &pos);
+        return match operands[0] {
+          Operand::ImmI(subsec) => subsec,
+          _ => panic!(".text or .data expects only integer as its operands for subsection, line: {}, column: {}", pos.line, pos.column)
+        }
+      }
+    },
+    _ => {
+      panic!("Internal Error. 'extract_subsection' expects pseudo_op, line: {}, column: {}", pos.line, pos.column);
+    }
+  }
+}
+
 fn separate_segments(statements: Vec<(Statement, SourcePosition)>) -> (Vec<(Statement, SourcePosition)>, Vec<(Statement, SourcePosition)>) {
-  let mut text = vec![];
-  let mut data = vec![];
+  let mut text = vec![vec![]];
+  let mut data = vec![vec![]];
   let mut seg = Segment::Text;
+  let mut subsection = 0;
   for (statement, pos) in statements {
-    if let Statement::Instruction(Opcode::PseudoOp(ref opcode), _) = statement {
-      match (*opcode).as_str() {
+    if let Statement::Instruction(Opcode::PseudoOp(ref pseudo_opcode), _) = statement {
+      match (*pseudo_opcode).as_str() {
         ".text" => {
           seg = Segment::Text;
+          subsection = extract_subsection(&statement, &pos) as usize;
           continue;
         },
         ".data" => {
           seg = Segment::Data;
+          subsection = extract_subsection(&statement, &pos) as usize;
           continue;
         },
         _ => {},
       }
     }
-    if seg == Segment::Text {
-      text.push((statement, pos));
-    } else if seg == Segment::Data {
-      data.push((statement, pos));
+    let seg_to_write = if seg == Segment::Text {&mut text} else {&mut data};
+    if subsection >= seg_to_write.len() {
+      for _ in seg_to_write.len()..(subsection + 1) {
+        seg_to_write.push(vec![]);
+      }
     }
+    seg_to_write[subsection].push((statement, pos));
   }
-  (text, data)
+  let flatten = |xs:Vec<Vec<_>>| xs.into_iter().flat_map (move |x| x).collect::<Vec<_>>();
+  (flatten(text), flatten(data))
 }
 
 #[derive(Default, Debug)]
