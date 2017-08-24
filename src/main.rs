@@ -24,10 +24,20 @@ enum Segment {
   Data,
 }
 
+macro_rules! panic_with_errorinfo {
+  ($pos:expr, $mes:expr) => {
+    panic!(format!("{}; line: {}, column: {}", $mes, $pos.line, $pos.column))
+  };
+  ($pos:expr, $mes:expr, $($format_params:expr),*) => {
+    panic!(format!("{}; line: {}, column: {}", 
+                   format!($mes, $($format_params),*),
+                   $pos.line, $pos.column))};
+}
+
 fn expect_dst(val: &Operand, opcode: &Opcode, pos: &SourcePosition) {
   match *val {
     Operand::Reg(_) => {},
-    _ => {panic!("Invalid operands for {:?}, line: {}, column: {}", opcode, pos.line, pos.column);},
+    _ => {panic_with_errorinfo!(pos, "Invalid operands for {:?}", opcode);},
   };
 }
 fn expect_src(val: &Operand, opcode: &Opcode, pos: &SourcePosition) {
@@ -35,12 +45,12 @@ fn expect_src(val: &Operand, opcode: &Opcode, pos: &SourcePosition) {
     Operand::Reg(_) => {},
     Operand::ImmI(_) => {},
     Operand::Label(_) => {},
-    _ => {panic!("Invalid operands for {:?}, line: {}, column: {}", opcode, pos.line, pos.column);},
+    _ => {panic_with_errorinfo!(pos, "Invalid operands for {:?}", opcode);},
   };
 }
 fn expect_len(operands: &Vec<Operand>, len: usize, opcode: &Opcode, pos: &SourcePosition) {
   if (*operands).len() != len {
-    panic!("{:?} needs {} operands, line: {}, column: {}", opcode, len, pos.line, pos.column);
+    panic_with_errorinfo!(pos, "{:?} needs {} operands", opcode, len);
   };
 }
 
@@ -125,9 +135,13 @@ fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
                   result.push(operand as u32);
                 },
                 Operand::Label(label) => {
-                  result.push(*label_map.get(&label).expect("Forward reference of labels is not implemented") as u32);
+                  let loc = label_map.get(&label);
+                  match loc {
+                    None => panic_with_errorinfo!(pos, "Forward reference of labels is not implemented: {}", &label),
+                    Some(loc) => result.push(*loc as u32),
+                  }
                 },
-                _ => panic!("Invalid operand for .long, line: {}, column: {}", pos.line, pos.column),
+                _ => panic_with_errorinfo!(pos, "Invalid operand for .long"),
               }
             },
             ".string" => {
@@ -136,13 +150,13 @@ fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
                 result.append(&mut operand);
                 result.push(0);
               } else {
-                panic!("Invalid operand for .string, line: {}, column: {}", pos.line, pos.column);
+                panic_with_errorinfo!(pos, "Invalid operand for .string");
               }
             },
-            opstr => {panic!("Invalid pseudo op in .data segment: {:?}, line: {}, column: {}", opstr, pos.line, pos.column);},
+            opstr => {panic_with_errorinfo!(pos, "Invalid pseudo op in .data segment: {:?}", opstr);},
           }
         } else {
-          panic!("Invalid opcode in .data segment: {:?}, line: {}, column: {}", opcode, pos.line, pos.column);
+          panic_with_errorinfo!(pos, "Invalid opcode in .data segment: {:?}", opcode);
         }
       }
     }
@@ -161,12 +175,12 @@ fn extract_subsection(statement: &Statement, pos: &SourcePosition) -> i32 {
         expect_len(operands, 1, &opcode, &pos);
         return match operands[0] {
           Operand::ImmI(subsec) => subsec,
-          _ => panic!(".text or .data expects only integer as its operands for subsection, line: {}, column: {}", pos.line, pos.column)
+          _ => panic_with_errorinfo!(pos, ".text or .data expects only integer as its operands for subsection")
         }
       }
     },
     _ => {
-      panic!("Internal Error. 'extract_subsection' expects pseudo_op, line: {}, column: {}", pos.line, pos.column);
+      panic_with_errorinfo!(pos, "Internal Error. 'extract_subsection' expects pseudo_op");
     }
   }
 }
