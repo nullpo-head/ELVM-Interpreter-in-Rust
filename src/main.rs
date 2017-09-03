@@ -54,67 +54,76 @@ fn expect_len(operands: &Vec<Operand>, len: usize, opcode: &Opcode, pos: &Source
   };
 }
 
-fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> Vec<Vec<Statement>> {
+fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> (Vec<Statement>, Vec<usize>) {
   let mut result = vec![];
-  let mut basic_block = vec![];
+  let mut basic_block_indices = vec![0usize];
+
+  let mut bb_pc = 0usize;
+  let mut mem_pc = 0usize;
+
   for (statement, pos) in statements {
+    assert!(bb_pc == basic_block_indices.len() - 1); // basic_block_indices always has a element if we never delete elements by its defintion.
+    assert!(mem_pc == result.len());
+
     match statement {
       Statement::Label(symbol) => {
-        if basic_block.len() > 0 {
-          result.push(basic_block);
-          basic_block = vec![];
+        if mem_pc > basic_block_indices[bb_pc] {
+          basic_block_indices.push(mem_pc);
+          bb_pc += 1
         }
-        label_map.insert(symbol, result.len());
+        label_map.insert(symbol, bb_pc);
       },
       Statement::Instruction(opcode, operands) => {
         use Opcode::*;
-        {
-          match opcode {
-            PseudoOp(ref pseudo_op) if *pseudo_op == ".loc" || *pseudo_op == ".file" => continue, // Skip meaningless ops
-            Jeq | Jne | Jlt | Jgt | Jle | Jge => {
-              expect_len(&operands, 3, &opcode, &pos);
-              expect_src(&operands[0], &opcode, &pos);
-              expect_dst(&operands[1], &opcode, &pos);
-              expect_src(&operands[2], &opcode, &pos);
-            }, 
-            Jmp => {
-              expect_len(&operands, 1, &opcode, &pos);
-              expect_src(&operands[0], &opcode, &pos);
-            },
-            Getc => {
-              expect_len(&operands, 1, &opcode, &pos);
-              expect_dst(&operands[0], &opcode, &pos);
-            },
-            Putc => {
-              expect_len(&operands, 1, &opcode, &pos);
-              expect_src(&operands[0], &opcode, &pos);
-            },
-            Exit | Dump => {
-              expect_len(&operands, 0, &opcode, &pos);
-            },
-            _ => {
-              expect_len(&operands, 2, &opcode, &pos);
-              expect_dst(&operands[0], &opcode, &pos);
-              expect_src(&operands[1], &opcode, &pos);
-            },
-          }
+        // Check operands' types
+        match opcode {
+          PseudoOp(ref pseudo_op) if *pseudo_op == ".loc" || *pseudo_op == ".file" => continue, // Skip meaningless ops
+          Jeq | Jne | Jlt | Jgt | Jle | Jge => {
+            expect_len(&operands, 3, &opcode, &pos);
+            expect_src(&operands[0], &opcode, &pos);
+            expect_dst(&operands[1], &opcode, &pos);
+            expect_src(&operands[2], &opcode, &pos);
+          }, 
+          Jmp => {
+            expect_len(&operands, 1, &opcode, &pos);
+            expect_src(&operands[0], &opcode, &pos);
+          },
+          Getc => {
+            expect_len(&operands, 1, &opcode, &pos);
+            expect_dst(&operands[0], &opcode, &pos);
+          },
+          Putc => {
+            expect_len(&operands, 1, &opcode, &pos);
+            expect_src(&operands[0], &opcode, &pos);
+          },
+          Exit | Dump => {
+            expect_len(&operands, 0, &opcode, &pos);
+          },
+          _ => {
+            expect_len(&operands, 2, &opcode, &pos);
+            expect_dst(&operands[0], &opcode, &pos);
+            expect_src(&operands[1], &opcode, &pos);
+          },
         }
-        basic_block.push(Statement::Instruction(opcode.clone(), operands));
+        result.push(Statement::Instruction(opcode.clone(), operands));
+        mem_pc += 1;
+        // Separate a basic block if the op is jump
         match opcode {
           Jeq | Jne | Jlt | Jgt | Jle | Jge | Jmp => {
-            result.push(basic_block);
-            basic_block = vec![];
+            basic_block_indices.push(mem_pc);
+            bb_pc += 1;
           },
           _ => {}
         }
       },
     }
   }
-  if basic_block.len() > 0 {
-    result.push(basic_block);
+  if mem_pc > basic_block_indices[bb_pc] {
+    basic_block_indices.push(mem_pc);
+    bb_pc += 1
   }
-  label_map.insert(String::from("_etext"), result.len());
-  result
+  label_map.insert(String::from("_etext"), bb_pc);
+  (result, basic_block_indices)
 }
 
 fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> Vec<u32> {
@@ -296,58 +305,63 @@ fn dump_regs(env: &EvalEnv) {
   println!("PC={} A={} B={} C={} D={} BP={} SP={}", env.pc, env.registers[Register::A], env.registers[Register::B], env.registers[Register::C], env.registers[Register::D], env.registers[Register::BP], env.registers[Register::SP]);
 }
 
-fn eval(pc: usize, text: Vec<Vec<Statement>>, data: Vec<u32>, label_map: HashMap<String, usize>, verbose: bool) {
+fn eval(pc: usize, text: Vec<Statement>, basic_block_table: Vec<usize>, data: Vec<u32>, label_map: HashMap<String, usize>, verbose: bool) {
   let mut env = EvalEnv {pc: pc, data: data, label_map: label_map, ..Default::default()};
-  'block: while env.pc < text.len() {
-    let block = &text[env.pc];
-    for statement in block {
-      if verbose {
-        dump_regs(&env);
-      }
-      if let Statement::Instruction(ref opcode, ref operands)  = *statement {
-        use Opcode::*;
-        match *opcode {
-          Mov => *dst(&operands[0], &mut env) = src(&operands[1], &env),
-          Add => *dst(&operands[0], &mut env) = dst(&operands[0], &mut env).wrapping_add(src(&operands[1], &env)) & WORD_MASK,
-          Sub => *dst(&operands[0], &mut env) = dst(&operands[0], &mut env).wrapping_sub(src(&operands[1], &env)) & WORD_MASK,
-          Load => *dst(&operands[0], &mut env) = env.data[(src(&operands[1], &env) & WORD_MASK) as usize],
-          Store => {
-            let addr = (src(&operands[1], &env) & WORD_MASK) as usize;
-            env.data[addr] = src(&operands[0], &env);
-          },
-          Putc => {
-            io::stdout().write(&[src(&operands[0], &env) as u8]).expect("write error");
-          },
-          Getc => {
-            let mut buf = [0; 1];
-            io::stdin().read(&mut buf).expect("read error");
-            *dst(&operands[0], &mut env) = buf[0] as u32;
-          },
-          Eq | Ne | Lt | Gt | Le | Ge => {
-            let d = *dst(&operands[0], &mut env) & WORD_MASK;
-            let s = src(&operands[1], &env) & WORD_MASK;
-            *dst(&operands[0], &mut env) = if compare(opcode, d, s) {1} else {0};
-          },
-          Jeq | Jne | Jlt | Jgt | Jle | Jge => {
-            let j = src(&operands[0], &env) & WORD_MASK;
-            let d = *dst(&operands[1], &mut env) & WORD_MASK;
-            let s = src(&operands[2], &env) & WORD_MASK;
-            if compare(opcode, d, s) {
-              env.pc = j as usize;
-              continue 'block;
+  while env.pc < text.len() {
+    if verbose {
+      dump_regs(&env);
+    }
+
+    if let Statement::Instruction(ref opcode, ref operands)  = text[env.pc] {
+      use Opcode::*;
+      match *opcode {
+        Mov => *dst(&operands[0], &mut env) = src(&operands[1], &env),
+        Add => *dst(&operands[0], &mut env) = dst(&operands[0], &mut env).wrapping_add(src(&operands[1], &env)) & WORD_MASK,
+        Sub => *dst(&operands[0], &mut env) = dst(&operands[0], &mut env).wrapping_sub(src(&operands[1], &env)) & WORD_MASK,
+        Load => *dst(&operands[0], &mut env) = env.data[(src(&operands[1], &env) & WORD_MASK) as usize],
+        Store => {
+          let addr = (src(&operands[1], &env) & WORD_MASK) as usize;
+          env.data[addr] = src(&operands[0], &env);
+        },
+        Putc => {
+          io::stdout().write(&[src(&operands[0], &env) as u8]).expect("write error");
+        },
+        Getc => {
+          let mut buf = [0; 1];
+          io::stdin().read(&mut buf).expect("read error");
+          *dst(&operands[0], &mut env) = buf[0] as u32;
+        },
+        Eq | Ne | Lt | Gt | Le | Ge => {
+          let d = *dst(&operands[0], &mut env) & WORD_MASK;
+          let s = src(&operands[1], &env) & WORD_MASK;
+          *dst(&operands[0], &mut env) = if compare(opcode, d, s) {1} else {0};
+        },
+        Jeq | Jne | Jlt | Jgt | Jle | Jge => {
+          let j = src(&operands[0], &env) & WORD_MASK;
+          let d = *dst(&operands[1], &mut env) & WORD_MASK;
+          let s = src(&operands[2], &env) & WORD_MASK;
+          if compare(opcode, d, s) {
+            env.pc = basic_block_table[j as usize];
+            continue;
+          }
+        },
+        Jmp => {
+          let target = basic_block_table.get((src(&operands[0], &env) & WORD_MASK) as usize);
+          env.pc = match target {
+            Some(t) => *t,
+            None => {
+              dump_regs(&env);
+              panic!("Illegal jump target; target: {}", src(&operands[0], &env) & WORD_MASK);
             }
-          },
-          Jmp => {
-            env.pc = (src(&operands[0], &env) & WORD_MASK) as usize;
-            continue 'block;
-          },
-          Exit => std::process::exit(0),
-          Dump => {/* Do Nothing */},
-          PseudoOp(_) => unreachable!(),
-        }
-      } else {
-        panic!("Illegal statement in text. Bug of encode_to_text_mem.");
+          };
+          continue;
+        },
+        Exit => std::process::exit(0),
+        Dump => {/* Do Nothing */},
+        PseudoOp(_) => unreachable!(),
       }
+    } else {
+      panic!("Illegal statement in text. Bug of encode_to_text_mem.");
     }
     env.pc += 1;
   }
@@ -357,14 +371,14 @@ fn interpret(eir: &str, verbose: bool) {
   let statements = parse(eir);
   let (text, data) = separate_segments(statements);
   let mut label_map = HashMap::new();
-  let text_mem = encode_to_text_mem(text, &mut label_map);
+  let (text_mem, basic_block_table) = encode_to_text_mem(text, &mut label_map);
   let data_mem = encode_to_data_mem(data, &mut label_map);
 
   let start = match label_map.get("main") {
     Some(main) => *main,
     None => 0,
   };
-  eval(start, text_mem, data_mem, label_map, verbose);
+  eval(basic_block_table[start], text_mem, basic_block_table, data_mem, label_map, verbose);
 }
 
 fn main() {
