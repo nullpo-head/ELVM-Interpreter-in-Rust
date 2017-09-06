@@ -52,6 +52,13 @@ fn resolve_text_labels(text: &mut Vec<Statement>, label_map: &HashMap<String, us
   }
 }
 
+fn resolve_data_labels(data: &mut Vec<u32>, label_map: &HashMap<String, usize>, labels_to_resolve: &Vec<(String, usize)>) {
+  for &(ref symbol, ref pos) in labels_to_resolve.iter() {
+    let resolved = label_map.get(symbol).expect("Rerefence to an undeclared label");
+    data[*pos] = *resolved as u32;
+  }
+}
+
 fn expect_dst(val: &Operand, opcode: &Opcode, pos: &SourcePosition) {
   match *val {
     Operand::Reg(_) => {},
@@ -150,7 +157,7 @@ fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
   ((result, basic_block_indices), unresolved_labels)
 }
 
-fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> (Vec<u32>, Vec<usize>) {
+fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> (Vec<u32>, Vec<(String, usize)>) {
   let mut result = vec![];
   let mut unresolved_labels = vec![];
 
@@ -173,7 +180,7 @@ fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
                   let loc = label_map.get(&label);
                   match loc {
                     None => {
-                      unresolved_labels.push(result.len());
+                      unresolved_labels.push((label, result.len()));
                       result.push(0); // Dummy
                     },
                     Some(loc) => result.push(*loc as u32),
@@ -400,8 +407,9 @@ fn interpret(eir: &str, verbose: bool) {
   let (text, data) = separate_segments(statements);
   let mut label_map = HashMap::new();
   let ((mut text_mem, basic_block_table), unresolved_text_labels) = encode_to_text_mem(text, &mut label_map);
-  let (data_mem, unresolved_data_labels) = encode_to_data_mem(data, &mut label_map);
+  let (mut data_mem, unresolved_data_labels) = encode_to_data_mem(data, &mut label_map);
   resolve_text_labels(&mut text_mem, &label_map, &unresolved_text_labels);
+  resolve_data_labels(&mut data_mem, &label_map, &unresolved_data_labels);
 
   let start = match label_map.get("main") {
     Some(main) => *main,
