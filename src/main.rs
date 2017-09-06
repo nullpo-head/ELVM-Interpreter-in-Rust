@@ -34,6 +34,24 @@ macro_rules! panic_with_errorinfo {
                    $pos.line, $pos.column))};
 }
 
+fn resolve_text_labels(text: &mut Vec<Statement>, label_map: &HashMap<String, usize>, pos_to_resolve: &Vec<usize>) {
+  for pos in pos_to_resolve.iter() {
+    if let Statement::Instruction(_, ref mut operands) = text[*pos] {
+      for operand in operands.into_iter() {
+        let resolved;
+        if let Operand::Label(ref symbol) = *operand {
+          resolved = Some(label_map.get(symbol).expect("Rerefence to an undeclared label"));
+        } else {
+          resolved = None;
+        }
+        if let Some(addr) = resolved {
+          *operand = Operand::ImmI(*addr as i32);
+        }
+      }
+    }
+  }
+}
+
 fn expect_dst(val: &Operand, opcode: &Opcode, pos: &SourcePosition) {
   match *val {
     Operand::Reg(_) => {},
@@ -54,9 +72,10 @@ fn expect_len(operands: &Vec<Operand>, len: usize, opcode: &Opcode, pos: &Source
   };
 }
 
-fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> (Vec<Statement>, Vec<usize>) {
+fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> ((Vec<Statement>, Vec<usize>), Vec<usize>) {
   let mut result = vec![];
   let mut basic_block_indices = vec![0usize];
+  let mut unresolved_labels = vec![];
 
   let mut bb_pc = 0usize;
   let mut mem_pc = 0usize;
@@ -105,6 +124,11 @@ fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
             expect_src(&operands[1], &opcode, &pos);
           },
         }
+        for operand in operands.iter() {
+          if let Operand::Label(_) = *operand {
+            unresolved_labels.push(mem_pc);
+          }
+        }
         result.push(Statement::Instruction(opcode.clone(), operands));
         mem_pc += 1;
         // Separate a basic block if the op is jump
@@ -123,11 +147,13 @@ fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
     bb_pc += 1
   }
   label_map.insert(String::from("_etext"), bb_pc);
-  (result, basic_block_indices)
+  ((result, basic_block_indices), unresolved_labels)
 }
 
-fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> Vec<u32> {
+fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> (Vec<u32>, Vec<usize>) {
   let mut result = vec![];
+  let mut unresolved_labels = vec![];
+
   for (statement, pos) in statements {
     match statement {
       Statement::Label(symbol) => {
@@ -146,7 +172,10 @@ fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
                 Operand::Label(label) => {
                   let loc = label_map.get(&label);
                   match loc {
-                    None => panic_with_errorinfo!(pos, "Forward reference of labels is not implemented: {}", &label),
+                    None => {
+                      unresolved_labels.push(result.len());
+                      result.push(0); // Dummy
+                    },
                     Some(loc) => result.push(*loc as u32),
                   }
                 },
@@ -172,7 +201,7 @@ fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
   }
   label_map.insert(String::from("_edata"), result.len());
   result.resize(2 << (WORD_SIZE as u32 * CHAR_BITS), 0);
-  result
+  (result, unresolved_labels)
 }
 
 fn extract_subsection(statement: &Statement, pos: &SourcePosition) -> i32 {
@@ -277,7 +306,6 @@ fn src(src: &Operand, env: &EvalEnv) -> u32 {
   match *src {
     Operand::Reg(ref name) => env.registers[*name],
     Operand::ImmI(ref val) => *val as u32,
-    Operand::Label(ref name) => *env.label_map.get(name).expect(&format!("undefined label: {}", name)) as u32,
     _ => panic!("not src"),
   }
 }
@@ -371,8 +399,9 @@ fn interpret(eir: &str, verbose: bool) {
   let statements = parse(eir);
   let (text, data) = separate_segments(statements);
   let mut label_map = HashMap::new();
-  let (text_mem, basic_block_table) = encode_to_text_mem(text, &mut label_map);
-  let data_mem = encode_to_data_mem(data, &mut label_map);
+  let ((mut text_mem, basic_block_table), unresolved_text_labels) = encode_to_text_mem(text, &mut label_map);
+  let (data_mem, unresolved_data_labels) = encode_to_data_mem(data, &mut label_map);
+  resolve_text_labels(&mut text_mem, &label_map, &unresolved_text_labels);
 
   let start = match label_map.get("main") {
     Some(main) => *main,
