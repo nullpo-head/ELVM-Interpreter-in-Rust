@@ -18,9 +18,15 @@ pub enum Operand {
 }
 
 #[derive(Debug)]
-pub enum Statement {
+pub enum Instruction {
   Label(String),
   Instruction(Opcode, Vec<Operand>),
+}
+
+#[derive(Debug)]
+pub struct Statement {
+  pub instruction: Instruction,
+  pub position: SourcePosition,
 }
 
 #[derive(Debug, Clone)]
@@ -153,19 +159,19 @@ fn opcode<I>(input: I) -> ParseResult<Opcode, I>
   }).parse_stream(input)
 }
 
-pub fn parse(src: &str) -> Vec<(Statement, SourcePosition)> {
+pub fn parse(src: &str) -> Vec<Statement> {
   let instruction = parser(opcode).skip(inline_skipable()).then(|op| parser(move |input| {
     let _: State<_> = input;
     let pos = input.position;
     match op {
-      Opcode::PseudoOp(ref pseudo_op) if *pseudo_op == ".loc" || *pseudo_op == ".file" => skip_many(none_of("\n".chars())).map(|_| (Statement::Instruction(op.clone(), vec![]), pos)).parse_stream(input), // Skip the irregular-syntax operands of .loc and .file
-      _ => parser(operands).map(|operands| (Statement::Instruction(op.clone(), operands), pos)).parse_stream(input),
+      Opcode::PseudoOp(ref pseudo_op) if *pseudo_op == ".loc" || *pseudo_op == ".file" => skip_many(none_of("\n".chars())).map(|_| Statement { instruction: Instruction::Instruction(op.clone(), vec![]), position: pos }).parse_stream(input), // Skip the irregular-syntax operands of .loc and .file
+      _ => parser(operands).map(|operands| Statement { instruction: Instruction::Instruction(op.clone(), operands), position: pos }).parse_stream(input),
     }
   }));
   let label = parser(|input| {
     let _: State<_> = input;
     let pos = input.position;
-    symbol().and(token(':')).map(|(id, _)| (Statement::Label(id), pos)).parse_stream(input)
+    symbol().and(token(':')).map(|(id, _)| Statement { instruction: Instruction::Label(id), position: pos }).parse_stream(input)
   });
   let statement = try(label).or(instruction).skip(skipable());
   let mut program = many::<Vec<_>, _>(optional(skipable()).with(statement)).skip(eof());

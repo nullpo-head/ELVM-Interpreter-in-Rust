@@ -24,6 +24,7 @@ enum Segment {
   Data,
 }
 
+
 macro_rules! panic_with_errorinfo {
   ($pos:expr, $mes:expr) => {
     panic!(format!("{}; line: {}, column: {}", $mes, $pos.line, $pos.column))
@@ -36,7 +37,7 @@ macro_rules! panic_with_errorinfo {
 
 fn resolve_text_labels(text: &mut Vec<Statement>, label_map: &HashMap<String, usize>, pos_to_resolve: &Vec<usize>) {
   for pos in pos_to_resolve.iter() {
-    if let Statement::Instruction(_, ref mut operands) = text[*pos] {
+    if let Instruction::Instruction(_, ref mut operands) = text[*pos].instruction {
       for operand in operands.into_iter() {
         let resolved;
         if let Operand::Label(ref symbol) = *operand {
@@ -79,7 +80,7 @@ fn expect_len(operands: &Vec<Operand>, len: usize, opcode: &Opcode, pos: &Source
   };
 }
 
-fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> ((Vec<Statement>, Vec<usize>), Vec<usize>) {
+fn encode_to_text_mem(statements: Vec<Statement>, label_map: &mut HashMap<String, usize>) -> ((Vec<Statement>, Vec<usize>), Vec<usize>) {
   let mut result = vec![];
   let mut basic_block_indices = vec![0usize];
   let mut unresolved_labels = vec![];
@@ -87,48 +88,48 @@ fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
   let mut bb_pc = 0usize;
   let mut mem_pc = 0usize;
 
-  for (statement, pos) in statements {
-    assert!(bb_pc == basic_block_indices.len() - 1); // basic_block_indices always has a element if we never delete elements by its defintion.
-    assert!(mem_pc == result.len());
+  for statement in statements {
+    assert_eq!(bb_pc, basic_block_indices.len() - 1); // basic_block_indices always has a element if we never delete elements by its defintion.
+    assert_eq!(mem_pc, result.len());
 
-    match statement {
-      Statement::Label(symbol) => {
+    match statement.instruction {
+      Instruction::Label(symbol) => {
         if mem_pc > basic_block_indices[bb_pc] {
           basic_block_indices.push(mem_pc);
           bb_pc += 1
         }
         label_map.insert(symbol, bb_pc);
       },
-      Statement::Instruction(opcode, operands) => {
+      Instruction::Instruction(opcode, operands) => {
         use Opcode::*;
         // Check operands' types
         match opcode {
           PseudoOp(ref pseudo_op) if *pseudo_op == ".loc" || *pseudo_op == ".file" => continue, // Skip meaningless ops
           Jeq | Jne | Jlt | Jgt | Jle | Jge => {
-            expect_len(&operands, 3, &opcode, &pos);
-            expect_src(&operands[0], &opcode, &pos);
-            expect_dst(&operands[1], &opcode, &pos);
-            expect_src(&operands[2], &opcode, &pos);
+            expect_len(&operands, 3, &opcode, &statement.position);
+            expect_src(&operands[0], &opcode, &statement.position);
+            expect_dst(&operands[1], &opcode, &statement.position);
+            expect_src(&operands[2], &opcode, &statement.position);
           }, 
           Jmp => {
-            expect_len(&operands, 1, &opcode, &pos);
-            expect_src(&operands[0], &opcode, &pos);
+            expect_len(&operands, 1, &opcode, &statement.position);
+            expect_src(&operands[0], &opcode, &statement.position);
           },
           Getc => {
-            expect_len(&operands, 1, &opcode, &pos);
-            expect_dst(&operands[0], &opcode, &pos);
+            expect_len(&operands, 1, &opcode, &statement.position);
+            expect_dst(&operands[0], &opcode, &statement.position);
           },
           Putc => {
-            expect_len(&operands, 1, &opcode, &pos);
-            expect_src(&operands[0], &opcode, &pos);
+            expect_len(&operands, 1, &opcode, &statement.position);
+            expect_src(&operands[0], &opcode, &statement.position);
           },
           Exit | Dump => {
-            expect_len(&operands, 0, &opcode, &pos);
+            expect_len(&operands, 0, &opcode, &statement.position);
           },
           _ => {
-            expect_len(&operands, 2, &opcode, &pos);
-            expect_dst(&operands[0], &opcode, &pos);
-            expect_src(&operands[1], &opcode, &pos);
+            expect_len(&operands, 2, &opcode, &statement.position);
+            expect_dst(&operands[0], &opcode, &statement.position);
+            expect_src(&operands[1], &opcode, &statement.position);
           },
         }
         for operand in operands.iter() {
@@ -136,16 +137,16 @@ fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
             unresolved_labels.push(mem_pc);
           }
         }
-        result.push(Statement::Instruction(opcode.clone(), operands));
-        mem_pc += 1;
         // Separate a basic block if the op is jump
         match opcode {
           Jeq | Jne | Jlt | Jgt | Jle | Jge | Jmp => {
-            basic_block_indices.push(mem_pc);
+            basic_block_indices.push(mem_pc + 1);
             bb_pc += 1;
           },
           _ => {}
         }
+        result.push(Statement { instruction: Instruction::Instruction(opcode, operands), position: statement.position });
+        mem_pc += 1;
       },
     }
   }
@@ -157,21 +158,21 @@ fn encode_to_text_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
   ((result, basic_block_indices), unresolved_labels)
 }
 
-fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &mut HashMap<String, usize>) -> (Vec<u32>, Vec<(String, usize)>) {
+fn encode_to_data_mem(statements: Vec<Statement>, label_map: &mut HashMap<String, usize>) -> (Vec<u32>, Vec<(String, usize)>) {
   let mut result = vec![];
   let mut unresolved_labels = vec![];
 
-  for (statement, pos) in statements {
-    match statement {
-      Statement::Label(symbol) => {
+  for statement in statements {
+    match statement.instruction {
+      Instruction::Label(symbol) => {
         label_map.insert(symbol, result.len());
         continue;
       },
-      Statement::Instruction(opcode, mut operands) => {
+      Instruction::Instruction(opcode, mut operands) => {
         if let Opcode::PseudoOp(ref pseudo_op) = opcode {
           match pseudo_op.as_str() {
             ".long" => {
-              expect_len(&operands, 1, &opcode, &pos);
+              expect_len(&operands, 1, &opcode, &statement.position);
               match operands.remove(0) {
                 Operand::ImmI(operand) => {
                   result.push(operand as u32);
@@ -186,22 +187,22 @@ fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
                     Some(loc) => result.push(*loc as u32),
                   }
                 },
-                _ => panic_with_errorinfo!(pos, "Invalid operand for .long"),
+                _ => panic_with_errorinfo!(statement.position, "Invalid operand for .long"),
               }
             },
             ".string" => {
-              expect_len(&operands, 1, &opcode, &pos);
+              expect_len(&operands, 1, &opcode, &statement.position);
               if let Operand::ImmS(mut operand) = operands.remove(0) {
                 result.append(&mut operand);
                 result.push(0);
               } else {
-                panic_with_errorinfo!(pos, "Invalid operand for .string");
+                panic_with_errorinfo!(statement.position, "Invalid operand for .string");
               }
             },
-            opstr => {panic_with_errorinfo!(pos, "Invalid pseudo op in .data segment: {:?}", opstr);},
+            opstr => {panic_with_errorinfo!(statement.position, "Invalid pseudo op in .data segment: {:?}", opstr);},
           }
         } else {
-          panic_with_errorinfo!(pos, "Invalid opcode in .data segment: {:?}", opcode);
+          panic_with_errorinfo!(statement.position, "Invalid opcode in .data segment: {:?}", opcode);
         }
       }
     }
@@ -211,9 +212,9 @@ fn encode_to_data_mem(statements: Vec<(Statement, SourcePosition)>, label_map: &
   (result, unresolved_labels)
 }
 
-fn extract_subsection(statement: &Statement, pos: &SourcePosition) -> i32 {
+fn extract_subsection(statement: &Instruction, pos: &SourcePosition) -> i32 {
   match *statement {
-    Statement::Instruction(ref opcode, ref operands) => {
+    Instruction::Instruction(ref opcode, ref operands) => {
       if operands.len() == 0 {
         return 0;
       } else {
@@ -230,22 +231,22 @@ fn extract_subsection(statement: &Statement, pos: &SourcePosition) -> i32 {
   }
 }
 
-fn separate_segments(statements: Vec<(Statement, SourcePosition)>) -> (Vec<(Statement, SourcePosition)>, Vec<(Statement, SourcePosition)>) {
+fn separate_segments(statements: Vec<Statement>) -> (Vec<Statement>, Vec<Statement>) {
   let mut text = vec![vec![]];
   let mut data = vec![vec![]];
   let mut seg = Segment::Text;
   let mut subsection = 0;
-  for (statement, pos) in statements {
-    if let Statement::Instruction(Opcode::PseudoOp(ref pseudo_opcode), _) = statement {
+  for statement in statements {
+    if let Instruction::Instruction(Opcode::PseudoOp(ref pseudo_opcode), _) = statement.instruction {
       match (*pseudo_opcode).as_str() {
         ".text" => {
           seg = Segment::Text;
-          subsection = extract_subsection(&statement, &pos) as usize;
+          subsection = extract_subsection(&statement.instruction, &statement.position) as usize;
           continue;
         },
         ".data" => {
           seg = Segment::Data;
-          subsection = extract_subsection(&statement, &pos) as usize;
+          subsection = extract_subsection(&statement.instruction, &statement.position) as usize;
           continue;
         },
         _ => {},
@@ -257,7 +258,7 @@ fn separate_segments(statements: Vec<(Statement, SourcePosition)>) -> (Vec<(Stat
         seg_to_write.push(vec![]);
       }
     }
-    seg_to_write[subsection].push((statement, pos));
+    seg_to_write[subsection].push(statement);
   }
   let flatten = |xs:Vec<Vec<_>>| xs.into_iter().flat_map (move |x| x).collect::<Vec<_>>();
   (flatten(text), flatten(data))
@@ -347,7 +348,7 @@ fn eval(pc: usize, text: Vec<Statement>, basic_block_table: Vec<usize>, data: Ve
       dump_regs(&env);
     }
 
-    if let Statement::Instruction(ref opcode, ref operands)  = text[env.pc] {
+    if let Instruction::Instruction(ref opcode, ref operands)  = text[env.pc].instruction {
       use Opcode::*;
       match *opcode {
         Mov => *dst(&operands[0], &mut env) = src(&operands[1], &env),
