@@ -424,14 +424,14 @@ fn main() {
   opts.optflag("h", "help", "");
   opts.optflag("v", "verbose", "");
   let parse = opts.parse(&args[1..]).expect("Option parsing failed");
-  if args.len() < 2 || parse.opt_present("h") {
+  if parse.free.len() < 1 || parse.opt_present("h") {
     println!("Usage: {} EIR_FILE", args[0]);
     return;
   }
 
   let mut eir_str = String::new();
   {
-    let mut file = File::open(&args[1]).expect("Could not open file");
+    let mut file = File::open(&parse.free[0]).expect("Could not open file");
     file.read_to_string(&mut eir_str).expect("Could not read file");
   }
   
