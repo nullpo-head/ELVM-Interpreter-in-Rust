@@ -87,7 +87,8 @@ fn string_literal<'a, I>() -> Box<Parser<Input = I, Output = Vec<u32>> + 'a>
         'n' => Ok(('\n' as u32, Consumed::Consumed(input))),
         't' => Ok(('\t' as u32, Consumed::Consumed(input))),
         'x' => many1::<String, _>(hex_digit()).map(|lit| u32::from_str_radix(&lit, 16).unwrap()).parse_stream(input),
-        escape => {println!("{}", escape); unimplemented!()},
+        'b' => Ok(('\x08' as u32, Consumed::Consumed(input))),
+        _ => {panic!("unknown format: {:?}", d)},
       }})).parse_stream(input)
     } else {
       Ok((c as u32, Consumed::Empty(input)))
