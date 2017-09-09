@@ -207,7 +207,11 @@ fn encode_to_data_mem(statements: Vec<Statement>, label_map: &mut HashMap<String
       }
     }
   }
-  label_map.insert(String::from("_edata"), result.len());
+  let edata_addr = result.len();
+  let edata_val = result.len() as u32 + 1;
+  label_map.insert(String::from("_edata"), edata_addr);
+  result.push(edata_val);
+
   result.resize(2 << (WORD_SIZE as u32 * CHAR_BITS), 0);
   (result, unresolved_labels)
 }
