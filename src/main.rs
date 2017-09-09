@@ -275,9 +275,10 @@ struct RegisterEnv {
 }
 
 #[derive(Default, Debug)]
-struct EvalEnv {
-  pc: usize,
+struct EvalEnv<'a> {
+  mem_pc: usize,
   registers: RegisterEnv,
+  text: Vec<Statement<'a>>,
   data: Vec<u32>,
   label_map: HashMap<String, usize>,
 }
@@ -310,17 +311,17 @@ impl IndexMut<Register> for RegisterEnv {
   }
 }
 
-fn src(src: &Operand, env: &EvalEnv) -> u32 {
+fn src(src: &Operand, registers: &RegisterEnv) -> u32 {
   match *src {
-    Operand::Reg(ref name) => env.registers[*name],
+    Operand::Reg(ref name) => registers[*name],
     Operand::ImmI(ref val) => *val as u32,
     _ => panic!("not src"),
   }
 }
 
-fn dst<'a>(dst: &Operand, env: &'a mut EvalEnv) -> &'a mut u32 {
+fn dst<'a>(dst: &Operand, registers: &'a mut RegisterEnv) -> &'a mut u32 {
   match *dst {
-    Operand::Reg(ref name) => &mut env.registers[*name],
+    Operand::Reg(ref name) => &mut registers[*name],
     _ => panic!("not dst"),
   }
 }
@@ -338,56 +339,56 @@ fn compare(cmp: &Opcode, dst: u32, src: u32) -> bool {
 }
 
 fn dump_regs(env: &EvalEnv) {
-  println!("PC={} A={} B={} C={} D={} BP={} SP={}", env.pc, env.registers[Register::A], env.registers[Register::B], env.registers[Register::C], env.registers[Register::D], env.registers[Register::BP], env.registers[Register::SP]);
+  println!("PC={} A={} B={} C={} D={} BP={} SP={}", env.text[env.mem_pc].source_info.line, env.registers[Register::A], env.registers[Register::B], env.registers[Register::C], env.registers[Register::D], env.registers[Register::BP], env.registers[Register::SP]);
 }
 
 fn eval(pc: usize, text: Vec<Statement>, basic_block_table: Vec<usize>, data: Vec<u32>, label_map: HashMap<String, usize>, verbose: bool) {
-  let mut env = EvalEnv {pc: pc, data: data, label_map: label_map, ..Default::default()};
-  while env.pc < text.len() {
+  let mut env = EvalEnv {mem_pc: pc, text: text, data: data, label_map: label_map, ..Default::default()};
+  while env.mem_pc < env.text.len() {
     if verbose {
       dump_regs(&env);
     }
 
-    if let Instruction::Instruction(ref opcode, ref operands)  = text[env.pc].instruction {
+    if let Instruction::Instruction(ref opcode, ref operands)  = env.text[env.mem_pc].instruction {
       use Opcode::*;
       match *opcode {
-        Mov => *dst(&operands[0], &mut env) = src(&operands[1], &env),
-        Add => *dst(&operands[0], &mut env) = dst(&operands[0], &mut env).wrapping_add(src(&operands[1], &env)) & WORD_MASK,
-        Sub => *dst(&operands[0], &mut env) = dst(&operands[0], &mut env).wrapping_sub(src(&operands[1], &env)) & WORD_MASK,
-        Load => *dst(&operands[0], &mut env) = env.data[(src(&operands[1], &env) & WORD_MASK) as usize],
+        Mov => *dst(&operands[0], &mut env.registers) = src(&operands[1], &env.registers),
+        Add => *dst(&operands[0], &mut env.registers) = dst(&operands[0], &mut env.registers).wrapping_add(src(&operands[1], &env.registers)) & WORD_MASK,
+        Sub => *dst(&operands[0], &mut env.registers) = dst(&operands[0], &mut env.registers).wrapping_sub(src(&operands[1], &env.registers)) & WORD_MASK,
+        Load => *dst(&operands[0], &mut env.registers) = env.data[(src(&operands[1], &env.registers) & WORD_MASK) as usize],
         Store => {
-          let addr = (src(&operands[1], &env) & WORD_MASK) as usize;
-          env.data[addr] = src(&operands[0], &env);
+          let addr = (src(&operands[1], &env.registers) & WORD_MASK) as usize;
+          env.data[addr] = src(&operands[0], &env.registers);
         },
         Putc => {
-          io::stdout().write(&[src(&operands[0], &env) as u8]).expect("write error");
+          io::stdout().write(&[src(&operands[0], &env.registers) as u8]).expect("write error");
         },
         Getc => {
           let mut buf = [0; 1];
           io::stdin().read(&mut buf).expect("read error");
-          *dst(&operands[0], &mut env) = buf[0] as u32;
+          *dst(&operands[0], &mut env.registers) = buf[0] as u32;
         },
         Eq | Ne | Lt | Gt | Le | Ge => {
-          let d = *dst(&operands[0], &mut env) & WORD_MASK;
-          let s = src(&operands[1], &env) & WORD_MASK;
-          *dst(&operands[0], &mut env) = if compare(opcode, d, s) {1} else {0};
+          let d = *dst(&operands[0], &mut env.registers) & WORD_MASK;
+          let s = src(&operands[1], &env.registers) & WORD_MASK;
+          *dst(&operands[0], &mut env.registers) = if compare(opcode, d, s) {1} else {0};
         },
         Jeq | Jne | Jlt | Jgt | Jle | Jge => {
-          let j = src(&operands[0], &env) & WORD_MASK;
-          let d = *dst(&operands[1], &mut env) & WORD_MASK;
-          let s = src(&operands[2], &env) & WORD_MASK;
+          let j = src(&operands[0], &env.registers) & WORD_MASK;
+          let d = *dst(&operands[1], &mut env.registers) & WORD_MASK;
+          let s = src(&operands[2], &env.registers) & WORD_MASK;
           if compare(opcode, d, s) {
-            env.pc = basic_block_table[j as usize];
+            env.mem_pc = basic_block_table[j as usize];
             continue;
           }
         },
         Jmp => {
-          let target = basic_block_table.get((src(&operands[0], &env) & WORD_MASK) as usize);
-          env.pc = match target {
+          let target = basic_block_table.get((src(&operands[0], &env.registers) & WORD_MASK) as usize);
+          env.mem_pc = match target {
             Some(t) => *t,
             None => {
               dump_regs(&env);
-              panic!("Illegal jump target; target: {}", src(&operands[0], &env) & WORD_MASK);
+              panic!("Illegal jump target; target: {}", src(&operands[0], &env.registers) & WORD_MASK);
             }
           };
           continue;
@@ -399,7 +400,7 @@ fn eval(pc: usize, text: Vec<Statement>, basic_block_table: Vec<usize>, data: Ve
     } else {
       panic!("Illegal statement in text. Bug of encode_to_text_mem.");
     }
-    env.pc += 1;
+    env.mem_pc += 1;
   }
 }
 
