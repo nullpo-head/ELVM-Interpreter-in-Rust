@@ -1,5 +1,5 @@
 [package]
-name = "elvmp"
+name = "rust_elvmi"
 version = "0.1.0"
 authors = ["nullpo-head <abc.tkys+pub@gmail.com>"]
 

@@ -41,7 +41,7 @@ fn resolve_text_labels(text: &mut Vec<Statement>, label_map: &HashMap<String, us
       for operand in operands.into_iter() {
         let resolved;
         if let Operand::Label(ref symbol) = *operand {
-          resolved = Some(label_map.get(symbol).expect("Rerefence to an undeclared label"));
+          resolved = Some(label_map.get(symbol).expect(&format!("Reference to an undeclared label: {}", &symbol)));
         } else {
           resolved = None;
         }

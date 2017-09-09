@@ -4,7 +4,7 @@ require "test/unit"
 
 class TestInterpreter < Test::Unit::TestCase
 
-  BIN = "../target/release/elvmp"
+  BIN = "../target/release/rust_elvmi"
   TESTDIR = "./test"
 
   Dir.glob("#{TESTDIR}/*.eir").each do |filename|
